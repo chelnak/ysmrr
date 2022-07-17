@@ -7,22 +7,22 @@ import (
 	"io"
 )
 
-// Sc saves the current position of the cursor
+// Sc saves the current position of the cursor.
 func Sc(w io.Writer) {
 	fmt.Fprint(w, "\u001b7")
 }
 
-// Rc restores the cursor to the saved position
+// Rc restores the cursor to the saved position.
 func Rc(w io.Writer) {
 	fmt.Fprint(w, "\u001b8")
 }
 
-// Civis hides the cursor
+// Civis hides the cursor.
 func Civis(w io.Writer) {
 	fmt.Fprint(w, "\u001b[?25l")
 }
 
-// Cnorm shows the cursor
+// Cnorm shows the cursor.
 func Cnorm(w io.Writer) {
 	fmt.Fprintf(w, "\u001b[?25h")
 }

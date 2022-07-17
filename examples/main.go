@@ -29,7 +29,7 @@ func main() {
 
 	// Update the message of the installing spinner
 	time.Sleep(2 * time.Second)
-	installing.Update("Installing updated...")
+	installing.UpdateMessage("Installing updated...")
 
 	// Set installing to complete
 	time.Sleep(2 * time.Second)
@@ -38,6 +38,7 @@ func main() {
 	// Set running to error
 	time.Sleep(2 * time.Second)
 	running.Error()
+	running.UpdateMessage("Running error...")
 
 	// Stop the spinners in the group
 	time.Sleep(2 * time.Second)

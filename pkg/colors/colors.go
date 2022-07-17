@@ -7,8 +7,12 @@ import "github.com/fatih/color"
 type Color int
 
 const (
+	// NoColor will bypass the color lookup causing characters to render
+	// with the current default of the terminal.
+	NoColor = 0
+
 	// FgHiGreen is a foreground high intensity green color.
-	FgHiGreen Color = iota
+	FgHiGreen Color = iota + 20
 
 	// FgHiYellow is a foreground high intensity yellow color.
 	FgHiYellow
@@ -18,6 +22,9 @@ const (
 
 	// FgHiRed is a foreground high intensity red color.
 	FgHiRed
+
+	// FgWhite is a foreground white color.
+	FgHiWhite
 )
 
 var lookup = map[Color]color.Attribute{
@@ -25,9 +32,14 @@ var lookup = map[Color]color.Attribute{
 	FgHiYellow: color.FgHiYellow,
 	FgHiBlue:   color.FgHiBlue,
 	FgHiRed:    color.FgHiRed,
+	FgHiWhite:  color.FgHiWhite,
 }
 
 // GetColor returns a color.Color for the given color.
 func GetColor(c Color) *color.Color {
+	if c == 0 {
+		return nil
+	}
+
 	return color.New(lookup[c])
 }
