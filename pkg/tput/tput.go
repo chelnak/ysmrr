@@ -2,24 +2,27 @@
 // The escape codes used have been derrived from the tput program.
 package tput
 
-import "fmt"
+import (
+	"fmt"
+	"io"
+)
 
 // Sc saves the current position of the cursor
-func Sc() {
-	fmt.Printf("\u001b7")
+func Sc(w io.Writer) {
+	fmt.Fprint(w, "\u001b7")
 }
 
 // Rc restores the cursor to the saved position
-func Rc() {
-	fmt.Printf("\u001b8")
+func Rc(w io.Writer) {
+	fmt.Fprint(w, "\u001b8")
 }
 
 // Civis hides the cursor
-func Civis() {
-	fmt.Printf("\u001b[?25l")
+func Civis(w io.Writer) {
+	fmt.Fprint(w, "\u001b[?25l")
 }
 
 // Cnorm shows the cursor
-func Cnorm() {
-	fmt.Printf("\u001b[?25h")
+func Cnorm(w io.Writer) {
+	fmt.Fprintf(w, "\u001b[?25h")
 }

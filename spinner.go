@@ -18,6 +18,21 @@ type spinner struct {
 	err           bool
 }
 
+// GetMessage returns the current spinner message
+func (s *spinner) GetMessage() string {
+	return s.msg
+}
+
+// IsComplete returns true if the spinner is complete
+func (s *spinner) IsComplete() bool {
+	return s.complete
+}
+
+// IsError returns true if the spinner is in error state
+func (s *spinner) IsError() bool {
+	return s.err
+}
+
 // Update updates the spinner message
 func (s *spinner) Update(msg string) {
 	s.mutex.Lock()
@@ -42,6 +57,7 @@ func (s *spinner) Error() {
 	s.err = true
 }
 
+// NewSpinner creates a new spinner instance
 func NewSpinner(msg string, spinnerColor, completeColor, errorColor colors.Color) *spinner {
 	return &spinner{
 		spinnerColor:  colors.GetColor(spinnerColor),
