@@ -8,22 +8,10 @@ import (
 	"os"
 	"time"
 
+	"github.com/chelnak/ysmrr/pkg/charmap"
+	"github.com/chelnak/ysmrr/pkg/colors"
 	"github.com/chelnak/ysmrr/pkg/tput"
-	"github.com/fatih/color"
 )
-
-var Dots = []string{
-	"⠋",
-	"⠙",
-	"⠹",
-	"⠸",
-	"⠼",
-	"⠴",
-	"⠦",
-	"⠧",
-	"⠇",
-	"⠏",
-}
 
 // SpinnerManager manages spinners
 type SpinnerManager interface {
@@ -36,6 +24,9 @@ type spinnerManager struct {
 	Spinners      []*spinner
 	chars         []string
 	frameDuration time.Duration
+	spinnerColor  colors.Color
+	completeColor colors.Color
+	errorColor    colors.Color
 	writer        io.Writer
 	done          chan bool
 	ticks         *time.Ticker
@@ -44,9 +35,7 @@ type spinnerManager struct {
 
 // AddSpinner adds a new spinner to the manager
 func (sm *spinnerManager) AddSpinner(msg string) *spinner {
-	c := color.New(color.FgHiGreen)
-	spinner := NewSpinner(msg, c)
-
+	spinner := NewSpinner(msg, sm.spinnerColor, sm.completeColor, sm.errorColor)
 	sm.Spinners = append(sm.Spinners, spinner)
 	return spinner
 }
@@ -75,11 +64,13 @@ func (sm *spinnerManager) setNextPos() {
 func (sm *spinnerManager) renderFrame() {
 	for _, s := range sm.Spinners {
 		if s.complete {
-			fmt.Fprintf(sm.writer, "\r✓ %s\n", s.msg)
+			s.completeColor.Fprint(sm.writer, "\r✓")
+			fmt.Fprintf(sm.writer, " %s\n", s.msg)
 		} else if s.err {
-			fmt.Fprintf(sm.writer, "\r✗ %s\n", s.msg)
+			s.errorColor.Fprint(sm.writer, "\r✗")
+			fmt.Fprintf(sm.writer, " %s\n", s.msg)
 		} else {
-			s.c.Fprintf(sm.writer, "%s", sm.chars[sm.pos])
+			s.spinnerColor.Fprintf(sm.writer, "%s", sm.chars[sm.pos])
 			fmt.Fprintf(sm.writer, " %s\r", s.msg)
 			fmt.Fprint(sm.writer, "\n")
 		}
@@ -103,12 +94,52 @@ func (sm *spinnerManager) render() {
 	}
 }
 
-// NewSpinnerManager creates a new spinner manager
-func NewSpinnerManager() SpinnerManager {
-	return &spinnerManager{
-		chars:         Dots,
+// Option represents a spinner manager option.
+type Option func(*spinnerManager)
+
+// NewSpinnerManager creates a new spinner manager.
+func NewSpinnerManager(options ...Option) SpinnerManager {
+	sm := &spinnerManager{
+		chars:         charmap.Dots,
 		frameDuration: 250 * time.Millisecond,
+		spinnerColor:  colors.FgHiGreen,
+		errorColor:    colors.FgHiRed,
+		completeColor: colors.FgHiGreen,
 		writer:        os.Stdout,
 		done:          make(chan bool),
+	}
+
+	for _, option := range options {
+		option(sm)
+	}
+
+	return sm
+}
+
+// WithChars sets the characters used for the spinners.
+func WithCharMap(chars []string) Option {
+	return func(sm *spinnerManager) {
+		sm.chars = chars
+	}
+}
+
+// WithFrameDuration sets the duration of each frame.
+func WithFrameDuration(d time.Duration) Option {
+	return func(sm *spinnerManager) {
+		sm.frameDuration = d
+	}
+}
+
+// WithSpinnerColor sets the color of the spinners.
+func WithSpinnerColor(c colors.Color) Option {
+	return func(sm *spinnerManager) {
+		sm.spinnerColor = c
+	}
+}
+
+// WithWriter sets the writer used for the spinners.
+func WithWriter(w io.Writer) Option {
+	return func(sm *spinnerManager) {
+		sm.writer = w
 	}
 }
