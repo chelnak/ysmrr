@@ -16,6 +16,10 @@ import (
 // SpinnerManager manages spinners
 type SpinnerManager interface {
 	AddSpinner(msg string) *spinner
+	GetSpinners() []*spinner
+	GetWriter() io.Writer
+	GetCharMap() []string
+	GetFrameDuration() time.Duration
 	Start()
 	Stop()
 }
@@ -40,6 +44,11 @@ func (sm *spinnerManager) AddSpinner(msg string) *spinner {
 	return spinner
 }
 
+// GetSpinners returns the spinners managed by the manager.
+func (sm *spinnerManager) GetSpinners() []*spinner {
+	return sm.Spinners
+}
+
 // Start signals that all spinners should start
 func (sm *spinnerManager) Start() {
 	sm.ticks = time.NewTicker(sm.frameDuration)
@@ -50,7 +59,22 @@ func (sm *spinnerManager) Start() {
 func (sm *spinnerManager) Stop() {
 	sm.done <- true
 	sm.ticks.Stop()
-	defer tput.Cnorm()
+	defer tput.Cnorm(sm.writer)
+}
+
+// GetWriter returns the configured io.Writer.
+func (sm *spinnerManager) GetWriter() io.Writer {
+	return sm.writer
+}
+
+// GetCharMap returns the configured character map.
+func (sm *spinnerManager) GetCharMap() []string {
+	return sm.chars
+}
+
+// GetFrameDuration returns the configured frame duration.
+func (sm *spinnerManager) GetFrameDuration() time.Duration {
+	return sm.frameDuration
 }
 
 func (sm *spinnerManager) setNextPos() {
@@ -78,8 +102,8 @@ func (sm *spinnerManager) renderFrame() {
 }
 
 func (sm *spinnerManager) render() {
-	tput.Sc()
-	tput.Civis()
+	tput.Sc(sm.writer)
+	tput.Civis(sm.writer)
 
 	for {
 		select {
@@ -89,7 +113,7 @@ func (sm *spinnerManager) render() {
 			sm.renderFrame()
 		}
 
-		tput.Rc()
+		tput.Rc(sm.writer)
 	}
 }
 
