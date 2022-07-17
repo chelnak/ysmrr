@@ -10,12 +10,20 @@ import (
 
 func TestSpinner(t *testing.T) {
 	initialMessage := "test"
-	spinner := ysmrr.NewSpinner(initialMessage, colors.FgHiGreen, colors.FgHiYellow, colors.FgHiRed)
+	spinnerOptions := ysmrr.SpinnerOptions{
+		Message:       initialMessage,
+		SpinnerColor:  colors.FgHiGreen,
+		CompleteColor: colors.FgHiGreen,
+		ErrorColor:    colors.FgHiRed,
+		MessageColor:  colors.NoColor,
+	}
+
+	spinner := ysmrr.NewSpinner(spinnerOptions)
 
 	assert.Equal(t, initialMessage, spinner.GetMessage())
 
 	updatedMessage := "test2"
-	spinner.Update(updatedMessage)
+	spinner.UpdateMessage(updatedMessage)
 	assert.Equal(t, updatedMessage, spinner.GetMessage())
 
 	spinner.Complete()
