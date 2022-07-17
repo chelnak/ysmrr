@@ -4,11 +4,16 @@ import (
 	"time"
 
 	"github.com/chelnak/ysmrr"
+	"github.com/chelnak/ysmrr/pkg/charmap"
+	"github.com/chelnak/ysmrr/pkg/colors"
 )
 
 func main() {
 	// Create a new spinner manager
-	sm := ysmrr.NewSpinnerManager()
+	sm := ysmrr.NewSpinnerManager(
+		ysmrr.WithCharMap(charmap.Arrows),
+		ysmrr.WithSpinnerColor(colors.FgHiBlue),
+	)
 
 	// Set up our spinners
 	downloading := sm.AddSpinner("Downloading...")
