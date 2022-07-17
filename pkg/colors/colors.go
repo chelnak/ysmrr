@@ -1,3 +1,4 @@
+// Package colors provides a collection of color definitions for use with a spinner.
 package colors
 
 import "github.com/fatih/color"
@@ -26,7 +27,7 @@ var lookup = map[Color]color.Attribute{
 	FgHiRed:    color.FgHiRed,
 }
 
-// Get returns a color.Color for the given color.
+// GetColor returns a color.Color for the given color.
 func GetColor(c Color) *color.Color {
 	return color.New(lookup[c])
 }

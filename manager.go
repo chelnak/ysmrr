@@ -51,7 +51,6 @@ func (sm *spinnerManager) Stop() {
 	sm.done <- true
 	sm.ticks.Stop()
 	defer tput.Cnorm()
-
 }
 
 func (sm *spinnerManager) setNextPos() {
@@ -64,13 +63,13 @@ func (sm *spinnerManager) setNextPos() {
 func (sm *spinnerManager) renderFrame() {
 	for _, s := range sm.Spinners {
 		if s.complete {
-			s.completeColor.Fprint(sm.writer, "\r✓")
+			_, _ = s.completeColor.Fprint(sm.writer, "\r✓")
 			fmt.Fprintf(sm.writer, " %s\n", s.msg)
 		} else if s.err {
-			s.errorColor.Fprint(sm.writer, "\r✗")
+			_, _ = s.errorColor.Fprint(sm.writer, "\r✗")
 			fmt.Fprintf(sm.writer, " %s\n", s.msg)
 		} else {
-			s.spinnerColor.Fprintf(sm.writer, "%s", sm.chars[sm.pos])
+			_, _ = s.spinnerColor.Fprintf(sm.writer, "%s", sm.chars[sm.pos])
 			fmt.Fprintf(sm.writer, " %s\r", s.msg)
 			fmt.Fprint(sm.writer, "\n")
 		}
@@ -116,7 +115,7 @@ func NewSpinnerManager(options ...Option) SpinnerManager {
 	return sm
 }
 
-// WithChars sets the characters used for the spinners.
+// WithCharMap sets the characters used for the spinners.
 func WithCharMap(chars []string) Option {
 	return func(sm *spinnerManager) {
 		sm.chars = chars
