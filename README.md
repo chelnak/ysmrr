@@ -1,6 +1,6 @@
 # You spin me right round
 
-YSMRR is a simple multi-line spinner package for your terminal.
+Ysmrr is a simple multi-line spinner package for your terminal.
 
 !["ysmrr"](demo.gif)
 
@@ -32,3 +32,12 @@ sm.Stop()
 ```
 
 See [examples/main.go](examples/main.go) for a more in-depth example.
+
+## Inspiration
+
+Ysmrr was inspired by the following projects:
+
+* [github.com/briandowns/spinner](https://github.com/briandowns/spinner)
+* [github.com/theckman/yacspin](https://github.com/theckman/yacspin)
+
+It also uses [github.com/fatih/color](https://github.com/fatih/color) for the underlying color system.
