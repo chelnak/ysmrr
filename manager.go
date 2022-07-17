@@ -61,6 +61,8 @@ func (sm *spinnerManager) Start() {
 func (sm *spinnerManager) Stop() {
 	sm.done <- true
 	sm.ticks.Stop()
+	defer tput.Cnorm()
+
 }
 
 func (sm *spinnerManager) setNextPos() {
@@ -87,9 +89,7 @@ func (sm *spinnerManager) renderFrame() {
 
 func (sm *spinnerManager) render() {
 	tput.Sc()
-
 	tput.Civis()
-	defer tput.Cnorm()
 
 	for {
 		select {
