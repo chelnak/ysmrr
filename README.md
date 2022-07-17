@@ -1,6 +1,6 @@
 # You spin me right round
 
-YSMRR is a simple multi-line spinner pacakge for your terminal.
+YSMRR is a simple multi-line spinner package for your terminal.
 
 ## Installing
 
@@ -30,4 +30,4 @@ go get -u github.com/chelnak/ysmrr
 	sm.Stop()
 ```
 
-See [](examples/main.go) for a more in-depth example.
+See [examples/main.go](examples/main.go) for a more in-depth example.

@@ -1,5 +1,7 @@
 github.com/chelnak/ysmrr v0.0.0-20220717103525-a36685263ba3 h1:JsDGKKrt6GYOXbkVxsddX9OkXakqsm7Qs8CG9p8Jaaw=
 github.com/chelnak/ysmrr v0.0.0-20220717103525-a36685263ba3/go.mod h1:+OYa1/7fcaEDTEcO6oIH12iAbgDVDFJsNBIe2qsVQMw=
+github.com/chelnak/ysmrr v0.0.1 h1:fYVoJxh37rzaO3sKnDiuarhx9aQI+nGTR0T7cMgPhfc=
+github.com/chelnak/ysmrr v0.0.1/go.mod h1:+OYa1/7fcaEDTEcO6oIH12iAbgDVDFJsNBIe2qsVQMw=
 github.com/fatih/color v1.13.0 h1:8LOYc1KYPPmyKMuN8QV2DNRWNbLo6LZ0iLs8+mlH53w=
 github.com/fatih/color v1.13.0/go.mod h1:kLAiJbzzSOZDVNGyDpeOxJ47H46qBXwg5ILebYFFOfk=
 github.com/mattn/go-colorable v0.1.9/go.mod h1:u6P/XSegPjTcexA+o6vUJrdnUu04hMope9wVRipJSqc=
