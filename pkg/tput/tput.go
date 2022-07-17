@@ -21,5 +21,5 @@ func Civis() {
 
 // Cnorm shows the cursor
 func Cnorm() {
-	fmt.Printf("\u001b[?12l[?25h")
+	fmt.Printf("\u001b[?25h")
 }
