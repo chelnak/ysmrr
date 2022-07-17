@@ -2,6 +2,8 @@
 
 YSMRR is a simple multi-line spinner package for your terminal.
 
+!["ysmrr"](demo.gif)
+
 ## Installing
 
 ```bash
@@ -10,8 +12,7 @@ go get -u github.com/chelnak/ysmrr
 
 ## Usage
 
-
-```bash
+``` go
 // Create a new spinner manager
 sm := ysmrr.NewSpinnerManager()
 
