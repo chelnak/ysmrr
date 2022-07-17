@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
+## [v0.0.4](https://github.com/chelnak/ysmrr/tree/v0.0.4) - 2022-07-17
+
+[Full Changelog](https://github.com/chelnak/ysmrr/compare/v0.0.3...v0.0.4)
+
+### Added
+
+- Add some tests [#7](https://github.com/chelnak/ysmrr/pull/7) ([chelnak](https://github.com/chelnak))
+
+### Fixed
+
+- Fix linter [#6](https://github.com/chelnak/ysmrr/pull/6) ([chelnak](https://github.com/chelnak))
+
 ## [v0.0.3](https://github.com/chelnak/ysmrr/tree/v0.0.3) - 2022-07-17
 
 [Full Changelog](https://github.com/chelnak/ysmrr/compare/v0.0.2...v0.0.3)
