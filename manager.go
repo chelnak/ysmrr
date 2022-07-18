@@ -6,7 +6,6 @@ import (
 	"io"
 	"os"
 	"os/signal"
-	"syscall"
 	"time"
 
 	"github.com/chelnak/ysmrr/pkg/charmap"
@@ -69,8 +68,8 @@ func (sm *spinnerManager) Start() {
 	// terminal is properly reset.
 	// Unsure if this is the right place for this especially given
 	// that it calls os.Exit.
-	signals := make(chan os.Signal, 2)
-	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
+	signals := make(chan os.Signal, 1)
+	signal.Notify(signals, os.Interrupt)
 
 	go func() {
 		<-signals
@@ -82,7 +81,11 @@ func (sm *spinnerManager) Start() {
 	go sm.render()
 }
 
-// Stop signals that all spinners should complete.
+// Stop sends a signal to the render goroutine to stop
+// rendering. We then stop the ticker and persist the final
+// frame for each spinner.
+// Finally the deferred tput command will ensure tat the cursor
+// is no longer hidden.
 func (sm *spinnerManager) Stop() {
 	sm.done <- true
 	sm.ticks.Stop()
@@ -129,20 +132,16 @@ func (sm *spinnerManager) GetMessageColor() colors.Color {
 	return sm.messageColor
 }
 
-func (sm *spinnerManager) setNextFrame() {
-	sm.frame += 1
-	if sm.frame >= len(sm.chars) {
-		sm.frame = 0
-	}
-}
-
-func (sm *spinnerManager) renderFrame() {
-	for _, s := range sm.spinners {
-		s.Print(sm.writer, sm.chars[sm.frame])
-	}
-	sm.setNextFrame()
-}
-
+// This is the code that actually renders the spinners.
+// Rendering is done in a separate goroutine so that the main
+// goroutine can continue to handle signals.
+// The render goroutine is called by Start().
+//
+// Each tick signal calls renderFrame which in turn will print the current
+// frame to the writer provided by the manager.
+//
+// The render method also emits tput strings to the terminal to set the
+// correct location of the cursor.
 func (sm *spinnerManager) render() {
 	tput.Sc(sm.writer)
 	tput.Civis(sm.writer)
@@ -156,6 +155,20 @@ func (sm *spinnerManager) render() {
 		}
 
 		tput.Rc(sm.writer)
+	}
+}
+
+func (sm *spinnerManager) renderFrame() {
+	for _, s := range sm.spinners {
+		s.Print(sm.writer, sm.chars[sm.frame])
+	}
+	sm.setNextFrame()
+}
+
+func (sm *spinnerManager) setNextFrame() {
+	sm.frame += 1
+	if sm.frame >= len(sm.chars) {
+		sm.frame = 0
 	}
 }
 
