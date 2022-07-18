@@ -21,6 +21,10 @@ type SpinnerManager interface {
 	GetWriter() io.Writer
 	GetCharMap() []string
 	GetFrameDuration() time.Duration
+	GetSpinnerColor() colors.Color
+	GetErrorColor() colors.Color
+	GetCompleteColor() colors.Color
+	GetMessageColor() colors.Color
 	Start()
 	Stop()
 }
@@ -103,6 +107,26 @@ func (sm *spinnerManager) GetCharMap() []string {
 // GetFrameDuration returns the configured frame duration.
 func (sm *spinnerManager) GetFrameDuration() time.Duration {
 	return sm.frameDuration
+}
+
+// GetSpinnerColor returns the configured color of the spinners.
+func (sm *spinnerManager) GetSpinnerColor() colors.Color {
+	return sm.spinnerColor
+}
+
+// GetErrorColor returns the configured color of error icon.
+func (sm *spinnerManager) GetErrorColor() colors.Color {
+	return sm.errorColor
+}
+
+// GetCompleteColor returns the configured color of completed icon.
+func (sm *spinnerManager) GetCompleteColor() colors.Color {
+	return sm.completeColor
+}
+
+// GetMessageColor returns the color of the message.
+func (sm *spinnerManager) GetMessageColor() colors.Color {
+	return sm.messageColor
 }
 
 func (sm *spinnerManager) setNextFrame() {
