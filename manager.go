@@ -14,8 +14,8 @@ import (
 
 // SpinnerManager manages spinners
 type SpinnerManager interface {
-	AddSpinner(msg string) Spinner
-	GetSpinners() []Spinner
+	AddSpinner(msg string) *Spinner
+	GetSpinners() []*Spinner
 	GetWriter() io.Writer
 	GetCharMap() []string
 	GetFrameDuration() time.Duration
@@ -24,7 +24,7 @@ type SpinnerManager interface {
 }
 
 type spinnerManager struct {
-	spinners      []Spinner
+	spinners      []*Spinner
 	chars         []string
 	frameDuration time.Duration
 	spinnerColor  colors.Color
@@ -38,7 +38,7 @@ type spinnerManager struct {
 }
 
 // AddSpinner adds a new spinner to the manager.
-func (sm *spinnerManager) AddSpinner(message string) Spinner {
+func (sm *spinnerManager) AddSpinner(message string) *Spinner {
 	opts := SpinnerOptions{
 		Message:       message,
 		SpinnerColor:  sm.spinnerColor,
@@ -53,7 +53,7 @@ func (sm *spinnerManager) AddSpinner(message string) Spinner {
 }
 
 // GetSpinners returns the spinners managed by the manager.
-func (sm *spinnerManager) GetSpinners() []Spinner {
+func (sm *spinnerManager) GetSpinners() []*Spinner {
 	return sm.spinners
 }
 
