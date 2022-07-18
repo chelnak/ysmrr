@@ -41,5 +41,9 @@ func GetColor(c Color) *color.Color {
 		return nil
 	}
 
-	return color.New(lookup[c])
+	if val, ok := lookup[c]; ok {
+		return color.New(val)
+	}
+
+	return nil
 }
