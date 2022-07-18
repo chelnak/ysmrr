@@ -34,6 +34,21 @@ func TestGetColor(t *testing.T) {
 			c:    colors.FgHiRed,
 			want: color.New(color.FgHiRed),
 		},
+		{
+			name: "GetColor returns the correct mapping for FgHiWhite",
+			c:    colors.FgHiWhite,
+			want: color.New(color.FgHiWhite),
+		},
+		{
+			name: "GetColor returns the correct mapping for NoColor",
+			c:    colors.NoColor,
+			want: nil,
+		},
+		{
+			name: "GetColor returns nil for an unknown color",
+			c:    colors.Color(100),
+			want: nil,
+		},
 	}
 
 	for _, tt := range tests {
