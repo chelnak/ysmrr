@@ -9,19 +9,8 @@ import (
 	"github.com/fatih/color"
 )
 
-// Spinner is a spinner instance
-type Spinner interface {
-	GetMessage() string
-	UpdateMessage(msg string)
-	IsComplete() bool
-	IsError() bool
-	Complete()
-	Error()
-	Print(w io.Writer, char string)
-}
-
 // Spinner manages a single spinner
-type spinner struct {
+type Spinner struct {
 	mutex         sync.Mutex
 	spinnerColor  *color.Color
 	completeColor *color.Color
@@ -33,7 +22,7 @@ type spinner struct {
 }
 
 // GetMessage returns the current spinner message.
-func (s *spinner) GetMessage() string {
+func (s *Spinner) GetMessage() string {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
@@ -41,7 +30,7 @@ func (s *spinner) GetMessage() string {
 }
 
 // UpdateMessage updates the spinner message.
-func (s *spinner) UpdateMessage(message string) {
+func (s *Spinner) UpdateMessage(message string) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
@@ -49,7 +38,7 @@ func (s *spinner) UpdateMessage(message string) {
 }
 
 // IsComplete returns true if the spinner is complete.
-func (s *spinner) IsComplete() bool {
+func (s *Spinner) IsComplete() bool {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
@@ -57,7 +46,7 @@ func (s *spinner) IsComplete() bool {
 }
 
 // IsError returns true if the spinner is in error state.
-func (s *spinner) IsError() bool {
+func (s *Spinner) IsError() bool {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
@@ -65,7 +54,7 @@ func (s *spinner) IsError() bool {
 }
 
 // Complete marks the spinner as complete.
-func (s *spinner) Complete() {
+func (s *Spinner) Complete() {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
@@ -73,7 +62,7 @@ func (s *spinner) Complete() {
 }
 
 // Error marks the spinner as error.
-func (s *spinner) Error() {
+func (s *Spinner) Error() {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
@@ -81,7 +70,7 @@ func (s *spinner) Error() {
 }
 
 // Print prints the spinner at a given position.
-func (s *spinner) Print(w io.Writer, char string) {
+func (s *Spinner) Print(w io.Writer, char string) {
 	if s.IsComplete() {
 		print(w, "✓", s.completeColor)
 	} else if s.IsError() {
@@ -111,8 +100,8 @@ type SpinnerOptions struct {
 }
 
 // NewSpinner creates a new spinner instance.
-func NewSpinner(options SpinnerOptions) Spinner {
-	return &spinner{
+func NewSpinner(options SpinnerOptions) *Spinner {
+	return &Spinner{
 		spinnerColor:  colors.GetColor(options.SpinnerColor),
 		completeColor: colors.GetColor(options.CompleteColor),
 		errorColor:    colors.GetColor(options.ErrorColor),
