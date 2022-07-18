@@ -2,7 +2,7 @@
 
 Ysmrr is a simple multi-line spinner package for your terminal.
 
-!["ysmrr"](demo.gif)
+!["ysmrr - examples/advanced/main.go"](advanced-example.gif)
 
 ## Installing
 
