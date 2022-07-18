@@ -31,7 +31,7 @@ time.Sleep(2 * time.Second)
 sm.Stop()
 ```
 
-See [examples/main.go](examples/main.go) for a more in-depth example.
+For example usage, check out the [examples](examples) directory for.
 
 ## Inspiration
 
