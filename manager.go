@@ -5,6 +5,8 @@ package ysmrr
 import (
 	"io"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	"github.com/chelnak/ysmrr/pkg/charmap"
@@ -59,6 +61,19 @@ func (sm *spinnerManager) GetSpinners() []*Spinner {
 
 // Start signals that all spinners should start.
 func (sm *spinnerManager) Start() {
+	// Handle SIGINT and SIGTERM so we can ensure that the
+	// terminal is properly reset.
+	// Unsure if this is the right place for this especially given
+	// that it calls os.Exit.
+	signals := make(chan os.Signal, 2)
+	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
+
+	go func() {
+		<-signals
+		sm.Stop()
+		os.Exit(0)
+	}()
+
 	sm.ticks = time.NewTicker(sm.frameDuration)
 	go sm.render()
 }
