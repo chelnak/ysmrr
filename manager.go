@@ -21,7 +21,7 @@ type SpinnerManager interface {
 	GetWriter() io.Writer
 	GetCharMap() []string
 	GetFrameDuration() time.Duration
-	Start()
+	Init()
 	Stop()
 }
 
@@ -59,8 +59,8 @@ func (sm *spinnerManager) GetSpinners() []*Spinner {
 	return sm.spinners
 }
 
-// Start signals that all spinners should start.
-func (sm *spinnerManager) Start() {
+// Init initializes the spinnerManager and starts the renderer.
+func (sm *spinnerManager) Init() {
 	// Handle SIGINT and SIGTERM so we can ensure that the
 	// terminal is properly reset.
 	// Unsure if this is the right place for this especially given

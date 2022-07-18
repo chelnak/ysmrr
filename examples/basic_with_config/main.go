@@ -20,10 +20,12 @@ func main() {
 	downloading := sm.AddSpinner("Downloading...")
 
 	// Start the spinners that have been added to the group
-	sm.Start()
+	sm.Init()
 	defer sm.Stop()
 
-	// Set downloading to complete
+	downloading.Start()
 	time.Sleep(2 * time.Second)
+
+	// Set downloading to complete
 	downloading.Complete()
 }

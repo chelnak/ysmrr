@@ -1,20 +1,16 @@
 package main
 
 import (
+	"fmt"
 	"sync"
 	"time"
 
 	"github.com/chelnak/ysmrr"
-	"github.com/chelnak/ysmrr/pkg/charmap"
-	"github.com/chelnak/ysmrr/pkg/colors"
 )
 
 func main() {
 	// Create a new spinner manager
-	sm := ysmrr.NewSpinnerManager(
-		ysmrr.WithCharMap(charmap.Arrows),
-		ysmrr.WithSpinnerColor(colors.FgHiBlue),
-	)
+	sm := ysmrr.NewSpinnerManager()
 
 	// Set up our spinners
 	downloading := sm.AddSpinner("Downloading...")
@@ -22,7 +18,7 @@ func main() {
 	running := sm.AddSpinner("Running...")
 
 	// Start the spinners that have been added to the group
-	sm.Start()
+	sm.Init()
 	defer sm.Stop()
 
 	// Set up our wait group
@@ -48,20 +44,47 @@ func main() {
 	wg.Wait()
 }
 
+// Simulate some work
+func calculateFibonacci(n int) int {
+	if n <= 1 {
+		return n
+	}
+
+	return calculateFibonacci(n-1) + calculateFibonacci(n-2)
+}
+
 func downloader(wg *sync.WaitGroup, s *ysmrr.Spinner) {
-	s.UpdateMessage("Downloading...")
 	time.Sleep(2 * time.Second)
+
+	s.Start()
+	for i := 0; i < 10; i++ {
+		n := calculateFibonacci(i)
+		message := fmt.Sprintf("Downloading %d...", n)
+		s.UpdateMessage(message)
+		time.Sleep(1 * time.Second)
+	}
+
+	s.UpdateMessage("Download complete...")
 	s.Complete()
 }
 
 func installer(wg *sync.WaitGroup, s *ysmrr.Spinner) {
-	s.UpdateMessage("Installing...")
-	time.Sleep(4 * time.Second)
+	time.Sleep(5 * time.Second)
+	s.Start()
+
+	for i := 0; i < 10; i++ {
+		n := calculateFibonacci(i)
+		message := fmt.Sprintf("Installing %d...", n)
+		s.UpdateMessage(message)
+		time.Sleep(200 * time.Millisecond)
+	}
+
 	s.UpdateMessage("Installation complete...")
 	s.Complete()
 }
 
 func runner(wg *sync.WaitGroup, s *ysmrr.Spinner) {
+	s.Start()
 	s.UpdateMessage("Running...")
 	time.Sleep(8 * time.Second)
 	s.Error()

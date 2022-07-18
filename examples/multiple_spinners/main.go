@@ -16,7 +16,11 @@ func main() {
 	running := sm.AddSpinner("Running...")
 
 	// Start the spinners that have been added to the group
-	sm.Start()
+	sm.Init()
+
+	downloading.Start()
+	installing.Start()
+	running.Start()
 
 	// Set downloading to complete
 	time.Sleep(2 * time.Second)

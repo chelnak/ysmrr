@@ -17,6 +17,7 @@ type Spinner struct {
 	errorColor    *color.Color
 	messageColor  *color.Color
 	message       string
+	started       bool
 	complete      bool
 	err           bool
 }
@@ -37,6 +38,11 @@ func (s *Spinner) UpdateMessage(message string) {
 	s.message = message
 }
 
+// IsStarted returns true if the spinner is started.
+func (s *Spinner) IsStarted() bool {
+	return s.started
+}
+
 // IsComplete returns true if the spinner is complete.
 func (s *Spinner) IsComplete() bool {
 	s.mutex.Lock()
@@ -51,6 +57,21 @@ func (s *Spinner) IsError() bool {
 	defer s.mutex.Unlock()
 
 	return s.err
+}
+
+// Start starts the spinner. If the spinner is already started,
+// the method will return without doing anything.
+func (s *Spinner) Start() {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
+	if s.started {
+		return
+	}
+
+	s.err = false
+	s.complete = false
+	s.started = true
 }
 
 // Complete marks the spinner as complete.
@@ -71,6 +92,11 @@ func (s *Spinner) Error() {
 
 // Print prints the spinner at a given position.
 func (s *Spinner) Print(w io.Writer, char string) {
+	// Return if the spinner is not started so we don't print anything.
+	if !s.started {
+		return
+	}
+
 	if s.IsComplete() {
 		print(w, "✓", s.completeColor)
 	} else if s.IsError() {
@@ -91,6 +117,7 @@ func print(w io.Writer, s string, c *color.Color) {
 	}
 }
 
+// SpinnerOptions defines the options for a spinner.
 type SpinnerOptions struct {
 	SpinnerColor  colors.Color
 	CompleteColor colors.Color
