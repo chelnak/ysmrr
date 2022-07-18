@@ -187,6 +187,15 @@ func WithCompleteColor(c colors.Color) Option {
 	}
 }
 
+// WithMessageColor sets the color of the message.
+// Available colors can be found in the package github.com/chelnak/ysmrr/pkg/colors.
+// The default color is NoColor.
+func WithMessageColor(c colors.Color) Option {
+	return func(sm *spinnerManager) {
+		sm.messageColor = c
+	}
+}
+
 // WithWriter sets the writer used for the spinners.
 // The writer can be anything that implements the io.Writer interface.
 // The default writer is os.Stdout.
