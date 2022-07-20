@@ -40,4 +40,7 @@ Ysmrr was inspired by the following projects:
 * [github.com/briandowns/spinner](https://github.com/briandowns/spinner)
 * [github.com/theckman/yacspin](https://github.com/theckman/yacspin)
 
-It also uses [github.com/fatih/color](https://github.com/fatih/color) for the underlying color system.
+It also uses [github.com/fatih/color](https://github.com/fatih/color) for the underlying color system
+and [github.com/mattn/go-colorable](https://github.com/mattn/go-colorable) for Windows support.
+
+
