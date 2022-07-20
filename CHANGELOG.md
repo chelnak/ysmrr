@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
+## [v0.0.6](https://github.com/chelnak/ysmrr/tree/v0.0.6) - 2022-07-20
+
+[Full Changelog](https://github.com/chelnak/ysmrr/compare/v0.0.5...v0.0.6)
+
+### Added
+
+- Add Windows support [#18](https://github.com/chelnak/ysmrr/pull/18) ([chelnak](https://github.com/chelnak))
+
+- Manager updates [#17](https://github.com/chelnak/ysmrr/pull/17) ([chelnak](https://github.com/chelnak))
+
+- Improve test coverage for color pkg [#16](https://github.com/chelnak/ysmrr/pull/16) ([chelnak](https://github.com/chelnak))
+
+- Improve test coverage for ysmrr pkg [#15](https://github.com/chelnak/ysmrr/pull/15) ([chelnak](https://github.com/chelnak))
+
+- Update examples [#14](https://github.com/chelnak/ysmrr/pull/14) ([chelnak](https://github.com/chelnak))
+
+- Handle SIGINT and SIGTERM [#13](https://github.com/chelnak/ysmrr/pull/13) ([chelnak](https://github.com/chelnak))
+
+- Add WithMessageColor option [#12](https://github.com/chelnak/ysmrr/pull/12) ([chelnak](https://github.com/chelnak))
+
+- Revert spinner interface [#11](https://github.com/chelnak/ysmrr/pull/11) ([chelnak](https://github.com/chelnak))
+
 ## [v0.0.5](https://github.com/chelnak/ysmrr/tree/v0.0.5) - 2022-07-17
 
 [Full Changelog](https://github.com/chelnak/ysmrr/compare/v0.0.4...v0.0.5)
