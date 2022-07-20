@@ -6,11 +6,13 @@ import (
 	"io"
 	"os"
 	"os/signal"
+	"runtime"
 	"time"
 
 	"github.com/chelnak/ysmrr/pkg/charmap"
 	"github.com/chelnak/ysmrr/pkg/colors"
 	"github.com/chelnak/ysmrr/pkg/tput"
+	"github.com/mattn/go-colorable"
 )
 
 // SpinnerManager manages spinners
@@ -51,7 +53,6 @@ func (sm *spinnerManager) AddSpinner(message string) *Spinner {
 		ErrorColor:    sm.errorColor,
 		MessageColor:  sm.messageColor,
 	}
-
 	spinner := NewSpinner(opts)
 	sm.spinners = append(sm.spinners, spinner)
 	return spinner
@@ -184,7 +185,7 @@ func NewSpinnerManager(options ...Option) SpinnerManager {
 		errorColor:    colors.FgHiRed,
 		completeColor: colors.FgHiGreen,
 		messageColor:  colors.NoColor,
-		writer:        os.Stdout,
+		writer:        getWriter(),
 		done:          make(chan bool),
 	}
 
@@ -193,6 +194,15 @@ func NewSpinnerManager(options ...Option) SpinnerManager {
 	}
 
 	return sm
+}
+
+func getWriter() io.Writer {
+	// Windows support conveniently provided by github.com/mattn/go-colorable <3.
+	if runtime.GOOS == "windows" {
+		return colorable.NewColorableStdout()
+	} else {
+		return os.Stdout
+	}
 }
 
 // WithCharMap sets the characters used for the spinners.
