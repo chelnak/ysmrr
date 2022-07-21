@@ -144,8 +144,11 @@ func (sm *spinnerManager) GetMessageColor() colors.Color {
 // The render method also emits tput strings to the terminal to set the
 // correct location of the cursor.
 func (sm *spinnerManager) render() {
-	tput.Sc(sm.writer)
+	// Prepare the screen.
 	tput.Civis(sm.writer)
+	tput.BufScreen(sm.writer, len(sm.spinners))
+	tput.Cuu(sm.writer, len(sm.spinners))
+	tput.Sc(sm.writer)
 
 	for {
 		select {
