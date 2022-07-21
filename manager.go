@@ -199,7 +199,7 @@ func (sm *spinnerManager) setNextFrame() {
 // 	)
 func NewSpinnerManager(options ...managerOption) SpinnerManager {
 	sm := &spinnerManager{
-		chars:         charmap.Dots,
+		chars:         charmap.GetCharMap(charmap.Dots),
 		frameDuration: 100 * time.Millisecond,
 		spinnerColor:  colors.FgHiGreen,
 		errorColor:    colors.FgHiRed,
@@ -231,9 +231,9 @@ type managerOption func(*spinnerManager)
 // WithCharMap sets the characters used for the spinners.
 // Available charmaps can be found in the package github.com/chelnak/ysmrr/pkg/charmap.
 // The default charmap is the Dots.
-func WithCharMap(chars []string) managerOption {
+func WithCharMap(c charmap.CharMap) managerOption {
 	return func(sm *spinnerManager) {
-		sm.chars = chars
+		sm.chars = charmap.GetCharMap(c)
 	}
 }
 

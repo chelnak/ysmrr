@@ -12,7 +12,7 @@ import (
 func main() {
 	// Create a new spinner manager
 	sm := ysmrr.NewSpinnerManager(
-		ysmrr.WithCharMap(charmap.Arrows),
+		ysmrr.WithCharMap(charmap.Pipe),
 		ysmrr.WithSpinnerColor(colors.FgHiBlue),
 	)
 
