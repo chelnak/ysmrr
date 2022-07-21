@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
+## [v0.0.7](https://github.com/chelnak/ysmrr/tree/v0.0.7) - 2022-07-21
+
+[Full Changelog](https://github.com/chelnak/ysmrr/compare/v0.0.6...v0.0.7)
+
+### Added
+
+- Update NewSpinnerManager constructor [#22](https://github.com/chelnak/ysmrr/pull/22) ([chelnak](https://github.com/chelnak))
+
+- Set frameDuration default [#21](https://github.com/chelnak/ysmrr/pull/21) ([chelnak](https://github.com/chelnak))
+
+### Fixed
+
+- Fix line rendering [#23](https://github.com/chelnak/ysmrr/pull/23) ([chelnak](https://github.com/chelnak))
+
 ## [v0.0.6](https://github.com/chelnak/ysmrr/tree/v0.0.6) - 2022-07-20
 
 [Full Changelog](https://github.com/chelnak/ysmrr/compare/v0.0.5...v0.0.6)
