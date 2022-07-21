@@ -173,11 +173,28 @@ func (sm *spinnerManager) setNextFrame() {
 	}
 }
 
-// Option represents a spinner manager option.
-type Option func(*spinnerManager)
-
-// NewSpinnerManager creates a new spinner manager.
-func NewSpinnerManager(options ...Option) SpinnerManager {
+// NewSpinnerManager is the constructor for the SpinnerManager.
+// You can create a new manager with sensible defaults or you can
+// pass in your own options using the provided methods.
+//
+// For example, this will initialize a default manager:
+//
+//  sm := NewSpinnerManager()
+//
+// Or this will initialize a manager with a custom character map:
+//
+// 	sm := NewSpinnerManager(
+// 		WithCharMap(charmap.Arrows)
+// 	)
+//
+// You can pass in multiple options to the constructor:
+//
+// 	sm := NewSpinnerManager(
+// 		WithCharMap(charmap.Arrows),
+// 		WithFrameDuration(time.Millisecond * 100),
+// 		WithSpinnerColor(colors.Red),
+// 	)
+func NewSpinnerManager(options ...managerOption) SpinnerManager {
 	sm := &spinnerManager{
 		chars:         charmap.Dots,
 		frameDuration: 100 * time.Millisecond,
@@ -205,10 +222,13 @@ func getWriter() io.Writer {
 	}
 }
 
+// Option represents a spinner manager option.
+type managerOption func(*spinnerManager)
+
 // WithCharMap sets the characters used for the spinners.
 // Available charmaps can be found in the package github.com/chelnak/ysmrr/pkg/charmap.
 // The default charmap is the Dots.
-func WithCharMap(chars []string) Option {
+func WithCharMap(chars []string) managerOption {
 	return func(sm *spinnerManager) {
 		sm.chars = chars
 	}
@@ -216,7 +236,7 @@ func WithCharMap(chars []string) Option {
 
 // WithFrameDuration sets the duration of each frame.
 // The default duration is 250 milliseconds.
-func WithFrameDuration(d time.Duration) Option {
+func WithFrameDuration(d time.Duration) managerOption {
 	return func(sm *spinnerManager) {
 		sm.frameDuration = d
 	}
@@ -225,7 +245,7 @@ func WithFrameDuration(d time.Duration) Option {
 // WithSpinnerColor sets the color of the spinners.
 // Available colors can be found in the package github.com/chelnak/ysmrr/pkg/colors.
 // The default color is FgHiGreen.
-func WithSpinnerColor(c colors.Color) Option {
+func WithSpinnerColor(c colors.Color) managerOption {
 	return func(sm *spinnerManager) {
 		sm.spinnerColor = c
 	}
@@ -234,7 +254,7 @@ func WithSpinnerColor(c colors.Color) Option {
 // WithErrorColor sets the color of the error icon.
 // Available colors can be found in the package github.com/chelnak/ysmrr/pkg/colors.
 // The default color is FgHiRed.
-func WithErrorColor(c colors.Color) Option {
+func WithErrorColor(c colors.Color) managerOption {
 	return func(sm *spinnerManager) {
 		sm.errorColor = c
 	}
@@ -243,7 +263,7 @@ func WithErrorColor(c colors.Color) Option {
 // WithCompleteColor sets the color of the complete icon.
 // Available colors can be found in the package github.com/chelnak/ysmrr/pkg/colors.
 // The default color is FgHiGreen.
-func WithCompleteColor(c colors.Color) Option {
+func WithCompleteColor(c colors.Color) managerOption {
 	return func(sm *spinnerManager) {
 		sm.completeColor = c
 	}
@@ -252,7 +272,7 @@ func WithCompleteColor(c colors.Color) Option {
 // WithMessageColor sets the color of the message.
 // Available colors can be found in the package github.com/chelnak/ysmrr/pkg/colors.
 // The default color is NoColor.
-func WithMessageColor(c colors.Color) Option {
+func WithMessageColor(c colors.Color) managerOption {
 	return func(sm *spinnerManager) {
 		sm.messageColor = c
 	}
@@ -261,7 +281,7 @@ func WithMessageColor(c colors.Color) Option {
 // WithWriter sets the writer used for the spinners.
 // The writer can be anything that implements the io.Writer interface.
 // The default writer is os.Stdout.
-func WithWriter(w io.Writer) Option {
+func WithWriter(w io.Writer) managerOption {
 	return func(sm *spinnerManager) {
 		sm.writer = w
 	}
