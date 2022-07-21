@@ -180,7 +180,7 @@ type Option func(*spinnerManager)
 func NewSpinnerManager(options ...Option) SpinnerManager {
 	sm := &spinnerManager{
 		chars:         charmap.Dots,
-		frameDuration: 250 * time.Millisecond,
+		frameDuration: 100 * time.Millisecond,
 		spinnerColor:  colors.FgHiGreen,
 		errorColor:    colors.FgHiRed,
 		completeColor: colors.FgHiGreen,
