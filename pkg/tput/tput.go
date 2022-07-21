@@ -5,6 +5,7 @@ package tput
 import (
 	"fmt"
 	"io"
+	"strings"
 )
 
 // Sc saves the current position of the cursor.
@@ -25,4 +26,15 @@ func Civis(w io.Writer) {
 // Cnorm shows the cursor.
 func Cnorm(w io.Writer) {
 	fmt.Fprintf(w, "\u001b[?25h")
+}
+
+// Cuu moves the cursor up by n lines.
+func Cuu(w io.Writer, n int) {
+	fmt.Fprintf(w, "\u001b[%dA", n)
+}
+
+// BufScreen ensures that there are enough lines available
+// by sending n * newlines to the writer.
+func BufScreen(w io.Writer, n int) {
+	fmt.Fprintf(w, "%s", strings.Repeat("\n", n))
 }
