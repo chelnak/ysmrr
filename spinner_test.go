@@ -71,9 +71,10 @@ func TestPrint(t *testing.T) {
 	spinner := ysmrr.NewSpinner(opts)
 
 	var buf bytes.Buffer
-	spinner.Print(&buf, charmap.Dots[0])
+	dots := charmap.GetCharMap(charmap.Dots)
+	spinner.Print(&buf, dots[0])
 
-	want := fmt.Sprintf("%s %s\r\n", charmap.Dots[0], initialMessage)
+	want := fmt.Sprintf("%s %s\r\n", dots[0], initialMessage)
 	assert.Equal(t, want, buf.String())
 }
 

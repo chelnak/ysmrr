@@ -11,6 +11,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var arrows = charmap.GetCharMap(charmap.Arrow)
+
 func TestNewSpinnerManager(t *testing.T) {
 	spinnerManager := ysmrr.NewSpinnerManager()
 	assert.NotNil(t, spinnerManager)
@@ -27,10 +29,10 @@ func TestNewSpinnerManager_WithWriter(t *testing.T) {
 
 func TestNewSpinnerManager_WithCharMap(t *testing.T) {
 	spinnerManager := ysmrr.NewSpinnerManager(
-		ysmrr.WithCharMap(charmap.Arrows),
+		ysmrr.WithCharMap(charmap.Arrow),
 	)
 
-	assert.Equal(t, charmap.Arrows, spinnerManager.GetCharMap())
+	assert.Equal(t, arrows, spinnerManager.GetCharMap())
 }
 
 func TestNewSpinnerManager_WithFrameDuration(t *testing.T) {
@@ -58,10 +60,10 @@ func TestGetWriter(t *testing.T) {
 
 func TestGetCharMap(t *testing.T) {
 	spinnerManager := ysmrr.NewSpinnerManager(
-		ysmrr.WithCharMap(charmap.Arrows),
+		ysmrr.WithCharMap(charmap.Arrow),
 	)
 
-	assert.Equal(t, charmap.Arrows, spinnerManager.GetCharMap())
+	assert.Equal(t, arrows, spinnerManager.GetCharMap())
 }
 
 func TestGetFrameDuration(t *testing.T) {

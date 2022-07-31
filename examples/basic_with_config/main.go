@@ -11,7 +11,7 @@ import (
 func main() {
 	// Create a new spinner manager
 	sm := ysmrr.NewSpinnerManager(
-		ysmrr.WithCharMap(charmap.Arrows),
+		ysmrr.WithCharMap(charmap.Arrow),
 		ysmrr.WithSpinnerColor(colors.FgHiBlue),
 		ysmrr.WithMessageColor(colors.FgHiYellow),
 	)
