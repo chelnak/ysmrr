@@ -5,14 +5,14 @@ import (
 	"time"
 
 	"github.com/chelnak/ysmrr"
-	"github.com/chelnak/ysmrr/pkg/charmap"
+	"github.com/chelnak/ysmrr/pkg/animations"
 	"github.com/chelnak/ysmrr/pkg/colors"
 )
 
 func main() {
 	// Create a new spinner manager
 	sm := ysmrr.NewSpinnerManager(
-		ysmrr.WithCharMap(charmap.Pipe),
+		ysmrr.WithAnimation(animations.Pipe),
 		ysmrr.WithSpinnerColor(colors.FgHiBlue),
 	)
 

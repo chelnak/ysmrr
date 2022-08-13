@@ -1,14 +1,13 @@
-// Package charmap provides a collection of character maps to be used
-// with a spinner.
-// Spinners have been borrowed from the following sources:
+// Package animations provides a collection of spinner animations.
+// Animations have been borrowed from the following sources:
 // * https://wiki.tcl-lang.org/page/Text+Spinner
 // * https://stackoverflow.com/questions/2685435/cooler-ascii-spinners
-package charmap
+package animations
 
-type CharMap int
+type Animation int
 
 const (
-	Arc CharMap = iota + 100
+	Arc Animation = iota + 100
 	Arrow
 	Baloon
 	Baloon2
@@ -24,7 +23,7 @@ const (
 	SquareCorners
 )
 
-var lookup = map[CharMap][]string{
+var lookup = map[Animation][]string{
 	Arc:            {"◜", "◠", "◝", "◞", "◡", "◟"},
 	Arrow:          {"←", "↖", "↑", "↗", "→", "↘", "↓", "↙"},
 	Baloon:         {".", "o", "O", "@", "*"},
@@ -41,7 +40,7 @@ var lookup = map[CharMap][]string{
 	SquareCorners:  {"◰", "◳", "◲", "◱"},
 }
 
-// GetCharMap retirms a slice of strings for the given CharMap.
-func GetCharMap(c CharMap) []string {
-	return lookup[c]
+// GetAnimation retirms a slice of strings for the given type.
+func GetAnimation(a Animation) []string {
+	return lookup[a]
 }

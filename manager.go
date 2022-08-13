@@ -9,7 +9,7 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/chelnak/ysmrr/pkg/charmap"
+	"github.com/chelnak/ysmrr/pkg/animations"
 	"github.com/chelnak/ysmrr/pkg/colors"
 	"github.com/chelnak/ysmrr/pkg/tput"
 	"github.com/mattn/go-colorable"
@@ -20,7 +20,7 @@ type SpinnerManager interface {
 	AddSpinner(msg string) *Spinner
 	GetSpinners() []*Spinner
 	GetWriter() io.Writer
-	GetCharMap() []string
+	GetAnimation() []string
 	GetFrameDuration() time.Duration
 	GetSpinnerColor() colors.Color
 	GetErrorColor() colors.Color
@@ -103,8 +103,9 @@ func (sm *spinnerManager) GetWriter() io.Writer {
 	return sm.writer
 }
 
-// GetCharMap returns the configured character map.
-func (sm *spinnerManager) GetCharMap() []string {
+// GetAnimation returns the current spinner animation as
+// a slice of strings.
+func (sm *spinnerManager) GetAnimation() []string {
 	return sm.chars
 }
 
@@ -182,24 +183,24 @@ func (sm *spinnerManager) setNextFrame() {
 //
 // For example, this will initialize a default manager:
 //
-//  sm := NewSpinnerManager()
+//	sm := NewSpinnerManager()
 //
-// Or this will initialize a manager with a custom character map:
+// Or this will initialize a manager with a custom animation:
 //
-// 	sm := NewSpinnerManager(
-// 		WithCharMap(charmap.Arrows)
-// 	)
+//	sm := NewSpinnerManager(
+//		WithAnimation(animations.Arrows)
+//	)
 //
 // You can pass in multiple options to the constructor:
 //
-// 	sm := NewSpinnerManager(
-// 		WithCharMap(charmap.Arrows),
-// 		WithFrameDuration(time.Millisecond * 100),
-// 		WithSpinnerColor(colors.Red),
-// 	)
+//	sm := NewSpinnerManager(
+//		WithAnimation(animations.Arrows),
+//		WithFrameDuration(time.Millisecond * 100),
+//		WithSpinnerColor(colors.Red),
+//	)
 func NewSpinnerManager(options ...managerOption) SpinnerManager {
 	sm := &spinnerManager{
-		chars:         charmap.GetCharMap(charmap.Dots),
+		chars:         animations.GetAnimation(animations.Dots),
 		frameDuration: 100 * time.Millisecond,
 		spinnerColor:  colors.FgHiGreen,
 		errorColor:    colors.FgHiRed,
@@ -228,12 +229,12 @@ func getWriter() io.Writer {
 // Option represents a spinner manager option.
 type managerOption func(*spinnerManager)
 
-// WithCharMap sets the characters used for the spinners.
-// Available charmaps can be found in the package github.com/chelnak/ysmrr/pkg/charmap.
-// The default charmap is the Dots.
-func WithCharMap(c charmap.CharMap) managerOption {
+// WithAnimation sets the animation used for the spinners.
+// Available spinner types can be found in the package github.com/chelnak/ysmrr/pkg/animations.
+// The default spinner animation is the Dots.
+func WithAnimation(a animations.Animation) managerOption {
 	return func(sm *spinnerManager) {
-		sm.chars = charmap.GetCharMap(c)
+		sm.chars = animations.GetAnimation(a)
 	}
 }
 
