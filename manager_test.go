@@ -6,12 +6,12 @@ import (
 	"time"
 
 	"github.com/chelnak/ysmrr"
-	"github.com/chelnak/ysmrr/pkg/charmap"
+	"github.com/chelnak/ysmrr/pkg/animations"
 	"github.com/chelnak/ysmrr/pkg/colors"
 	"github.com/stretchr/testify/assert"
 )
 
-var arrows = charmap.GetCharMap(charmap.Arrow)
+var arrows = animations.GetAnimation(animations.Arrow)
 
 func TestNewSpinnerManager(t *testing.T) {
 	spinnerManager := ysmrr.NewSpinnerManager()
@@ -27,12 +27,12 @@ func TestNewSpinnerManager_WithWriter(t *testing.T) {
 	assert.Equal(t, &buf, spinnerManager.GetWriter())
 }
 
-func TestNewSpinnerManager_WithCharMap(t *testing.T) {
+func TestNewSpinnerManager_WithAnimation(t *testing.T) {
 	spinnerManager := ysmrr.NewSpinnerManager(
-		ysmrr.WithCharMap(charmap.Arrow),
+		ysmrr.WithAnimation(animations.Arrow),
 	)
 
-	assert.Equal(t, arrows, spinnerManager.GetCharMap())
+	assert.Equal(t, arrows, spinnerManager.GetAnimation())
 }
 
 func TestNewSpinnerManager_WithFrameDuration(t *testing.T) {
@@ -58,12 +58,12 @@ func TestGetWriter(t *testing.T) {
 	assert.Equal(t, &buf, spinnerManager.GetWriter())
 }
 
-func TestGetCharMap(t *testing.T) {
+func TestGetAnimation(t *testing.T) {
 	spinnerManager := ysmrr.NewSpinnerManager(
-		ysmrr.WithCharMap(charmap.Arrow),
+		ysmrr.WithAnimation(animations.Arrow),
 	)
 
-	assert.Equal(t, arrows, spinnerManager.GetCharMap())
+	assert.Equal(t, arrows, spinnerManager.GetAnimation())
 }
 
 func TestGetFrameDuration(t *testing.T) {

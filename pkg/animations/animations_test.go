@@ -1,9 +1,9 @@
-package charmap_test
+package animations_test
 
 import (
 	"testing"
 
-	"github.com/chelnak/ysmrr/pkg/charmap"
+	"github.com/chelnak/ysmrr/pkg/animations"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -24,31 +24,31 @@ var (
 	SquareCorners  = []string{"◰", "◳", "◲", "◱"}
 )
 
-func TestCharMaps(t *testing.T) {
+func TestAnimations(t *testing.T) {
 	tests := []struct {
 		name string
-		c    charmap.CharMap
+		s    animations.Animation
 		want []string
 	}{
-		{name: "Arc", c: charmap.Arc, want: Arc},
-		{name: "Arrow", c: charmap.Arrow, want: Arrow},
-		{name: "Baloon", c: charmap.Baloon, want: Baloon},
-		{name: "Baloon2", c: charmap.Baloon2, want: Baloon2},
-		{name: "Circle", c: charmap.Circle, want: Circle},
-		{name: "CircleHalves", c: charmap.CircleHalves, want: CircleHalves},
-		{name: "CircleQuarters", c: charmap.CircleQuarters, want: CircleQuarters},
-		{name: "Dots", c: charmap.Dots, want: Dots},
-		{name: "Hamburger", c: charmap.Hamburger, want: Hamburger},
-		{name: "Layer", c: charmap.Layer, want: Layer},
-		{name: "Pipe", c: charmap.Pipe, want: Pipe},
-		{name: "Point", c: charmap.Point, want: Point},
-		{name: "Star", c: charmap.Star, want: Star},
-		{name: "SquareCorners", c: charmap.SquareCorners, want: SquareCorners},
+		{name: "Arc", s: animations.Arc, want: Arc},
+		{name: "Arrow", s: animations.Arrow, want: Arrow},
+		{name: "Baloon", s: animations.Baloon, want: Baloon},
+		{name: "Baloon2", s: animations.Baloon2, want: Baloon2},
+		{name: "Circle", s: animations.Circle, want: Circle},
+		{name: "CircleHalves", s: animations.CircleHalves, want: CircleHalves},
+		{name: "CircleQuarters", s: animations.CircleQuarters, want: CircleQuarters},
+		{name: "Dots", s: animations.Dots, want: Dots},
+		{name: "Hamburger", s: animations.Hamburger, want: Hamburger},
+		{name: "Layer", s: animations.Layer, want: Layer},
+		{name: "Pipe", s: animations.Pipe, want: Pipe},
+		{name: "Point", s: animations.Point, want: Point},
+		{name: "Star", s: animations.Star, want: Star},
+		{name: "SquareCorners", s: animations.SquareCorners, want: SquareCorners},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := charmap.GetCharMap(tt.c)
+			got := animations.GetAnimation(tt.s)
 			assert.Equal(t, tt.want, got)
 		})
 	}

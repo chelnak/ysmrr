@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/chelnak/ysmrr"
-	"github.com/chelnak/ysmrr/pkg/charmap"
+	"github.com/chelnak/ysmrr/pkg/animations"
 	"github.com/chelnak/ysmrr/pkg/colors"
 	"github.com/stretchr/testify/assert"
 )
@@ -71,7 +71,7 @@ func TestPrint(t *testing.T) {
 	spinner := ysmrr.NewSpinner(opts)
 
 	var buf bytes.Buffer
-	dots := charmap.GetCharMap(charmap.Dots)
+	dots := animations.GetAnimation(animations.Dots)
 	spinner.Print(&buf, dots[0])
 
 	want := fmt.Sprintf("%s %s\r\n", dots[0], initialMessage)
