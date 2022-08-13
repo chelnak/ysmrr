@@ -9,10 +9,10 @@ type Color int
 const (
 	// NoColor will bypass the color lookup causing characters to render
 	// with the current default of the terminal.
-	NoColor = 0
+	NoColor Color = iota
 
 	// FgHiGreen is a foreground high intensity green color.
-	FgHiGreen Color = iota + 20
+	FgHiGreen
 
 	// FgHiYellow is a foreground high intensity yellow color.
 	FgHiYellow

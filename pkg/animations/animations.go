@@ -7,7 +7,7 @@ package animations
 type Animation int
 
 const (
-	Arc Animation = iota + 100
+	Arc Animation = iota
 	Arrow
 	Baloon
 	Baloon2
