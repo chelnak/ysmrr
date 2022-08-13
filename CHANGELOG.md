@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
+## [v0.0.8](https://github.com/chelnak/ysmrr/tree/v0.0.8) - 2022-08-13
+
+[Full Changelog](https://github.com/chelnak/ysmrr/compare/v0.0.7...v0.0.8)
+
+### Added
+
+- Simplify enums [#28](https://github.com/chelnak/ysmrr/pull/28) ([chelnak](https://github.com/chelnak))
+
+- Rename spinner package [#27](https://github.com/chelnak/ysmrr/pull/27) ([chelnak](https://github.com/chelnak))
+
+- Better charmap selection [#25](https://github.com/chelnak/ysmrr/pull/25) ([chelnak](https://github.com/chelnak))
+
 ## [v0.0.7](https://github.com/chelnak/ysmrr/tree/v0.0.7) - 2022-07-21
 
 [Full Changelog](https://github.com/chelnak/ysmrr/compare/v0.0.6...v0.0.7)
