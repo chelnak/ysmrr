@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
+## [v0.1.0](https://github.com/chelnak/ysmrr/tree/v0.1.0) - 2022-08-14
+
+[Full Changelog](https://github.com/chelnak/ysmrr/compare/v0.0.8...v0.1.0)
+
+### Added
+
+- Improve TTY detection [#30](https://github.com/chelnak/ysmrr/pull/30) ([chelnak](https://github.com/chelnak))
+
 ## [v0.0.8](https://github.com/chelnak/ysmrr/tree/v0.0.8) - 2022-08-13
 
 [Full Changelog](https://github.com/chelnak/ysmrr/compare/v0.0.7...v0.0.8)
