@@ -3,6 +3,7 @@ package tput_test
 import (
 	"bytes"
 	"io"
+	"os"
 	"strings"
 	"testing"
 
@@ -10,7 +11,18 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func setup() {
+	_ = os.Setenv("YSMRR_FORCE_TTY", "true")
+}
+
+func cleanup() {
+	_ = os.Unsetenv("YSMRR_FORCE_TTY")
+}
+
 func TestTput(t *testing.T) {
+	setup()
+	defer cleanup()
+
 	tests := []struct {
 		name string
 		fn   func(w io.Writer)
@@ -48,6 +60,9 @@ func TestTput(t *testing.T) {
 }
 
 func TestTputCommandsWithInputs(t *testing.T) {
+	setup()
+	defer cleanup()
+
 	tests := []struct {
 		name  string
 		input int

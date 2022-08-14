@@ -13,6 +13,7 @@ import (
 	"github.com/chelnak/ysmrr/pkg/colors"
 	"github.com/chelnak/ysmrr/pkg/tput"
 	"github.com/mattn/go-colorable"
+	"github.com/mattn/go-isatty"
 )
 
 // SpinnerManager manages spinners
@@ -42,6 +43,7 @@ type spinnerManager struct {
 	done          chan bool
 	ticks         *time.Ticker
 	frame         int
+	tty           bool
 }
 
 // AddSpinner adds a new spinner to the manager.
@@ -156,7 +158,10 @@ func (sm *spinnerManager) render() {
 		case <-sm.done:
 			return
 		case <-sm.ticks.C:
-			sm.renderFrame()
+			// Only render the frame if we are in a terminal.
+			if sm.tty {
+				sm.renderFrame()
+			}
 		}
 
 		tput.Rc(sm.writer)
@@ -208,6 +213,7 @@ func NewSpinnerManager(options ...managerOption) SpinnerManager {
 		messageColor:  colors.NoColor,
 		writer:        getWriter(),
 		done:          make(chan bool),
+		tty:           tty(),
 	}
 
 	for _, option := range options {
@@ -215,6 +221,10 @@ func NewSpinnerManager(options ...managerOption) SpinnerManager {
 	}
 
 	return sm
+}
+
+func tty() bool {
+	return isatty.IsTerminal(os.Stdout.Fd()) || os.Getenv("YSMRR_FORCE_TTY") == "true"
 }
 
 func getWriter() io.Writer {
