@@ -42,6 +42,10 @@ func BufScreen(w io.Writer, n int) {
 	writef(w, "%s", strings.Repeat("\n", n))
 }
 
+func ClearLine(w io.Writer) {
+	write(w, "\u001b[K")
+}
+
 func tty() bool {
 	return isatty.IsTerminal(os.Stdout.Fd()) || os.Getenv("YSMRR_FORCE_TTY") == "true"
 }

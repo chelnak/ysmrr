@@ -48,6 +48,11 @@ func TestTput(t *testing.T) {
 			fn:   tput.Cnorm,
 			want: "\u001b[?25h",
 		},
+		{
+			name: "ClearLine",
+			fn:   tput.ClearLine,
+			want: "\u001b[K",
+		},
 	}
 
 	for _, tt := range tests {
