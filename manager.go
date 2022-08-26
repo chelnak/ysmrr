@@ -92,7 +92,6 @@ func (sm *spinnerManager) Start() {
 func (sm *spinnerManager) Stop() {
 	sm.done <- true
 	sm.ticks.Stop()
-	defer tput.Cnorm(sm.writer)
 
 	// Persist the final frame for each spinner.
 	for _, s := range sm.spinners {
@@ -149,17 +148,20 @@ func (sm *spinnerManager) GetMessageColor() colors.Color {
 func (sm *spinnerManager) render() {
 	// Prepare the screen.
 	tput.Civis(sm.writer)
-	tput.BufScreen(sm.writer, len(sm.spinners))
-	tput.Cuu(sm.writer, len(sm.spinners))
-	tput.Sc(sm.writer)
+	defer tput.Cnorm(sm.writer)
 
+outer:
 	for {
 		select {
 		case <-sm.done:
-			return
+			break outer
 		case <-sm.ticks.C:
 			// Only render the frame if we are in a terminal.
 			if sm.tty {
+				tput.BufScreen(sm.writer, len(sm.spinners))
+				tput.Cuu(sm.writer, len(sm.spinners))
+				tput.Sc(sm.writer)
+
 				sm.renderFrame()
 			}
 		}
