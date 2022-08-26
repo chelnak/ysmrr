@@ -95,6 +95,7 @@ func (sm *spinnerManager) Stop() {
 
 	// Persist the final frame for each spinner.
 	for _, s := range sm.spinners {
+		tput.ClearLine(sm.writer)
 		s.Print(sm.writer, sm.chars[sm.frame])
 	}
 }
@@ -172,6 +173,7 @@ outer:
 
 func (sm *spinnerManager) renderFrame() {
 	for _, s := range sm.spinners {
+		tput.ClearLine(sm.writer)
 		s.Print(sm.writer, sm.chars[sm.frame])
 	}
 	sm.setNextFrame()
