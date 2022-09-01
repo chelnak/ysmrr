@@ -80,7 +80,7 @@ func TestPrint(t *testing.T) {
 	spinner := ysmrr.NewSpinner(opts)
 
 	var buf bytes.Buffer
-	dots := animations.GetAnimation(animations.Dots)
+	_, dots := animations.GetAnimation(animations.Dots)
 	spinner.Print(&buf, dots[0])
 
 	want := fmt.Sprintf("%s %s\r\n", dots[0], initialMessage)

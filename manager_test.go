@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var arrows = animations.GetAnimation(animations.Arrow)
+var _, arrows = animations.GetAnimation(animations.Arrow)
 
 func TestNewSpinnerManager(t *testing.T) {
 	spinnerManager := ysmrr.NewSpinnerManager()
