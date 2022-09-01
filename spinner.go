@@ -38,6 +38,11 @@ func (s *Spinner) UpdateMessage(message string) {
 	s.notifyHasUpdate()
 }
 
+// UpdateMessagef updates the spinner message with a formatted string.
+func (s *Spinner) UpdateMessagef(format string, a ...interface{}) {
+	s.UpdateMessage(fmt.Sprintf(format, a...))
+}
+
 // IsComplete returns true if the spinner is complete.
 func (s *Spinner) IsComplete() bool {
 	s.mutex.Lock()

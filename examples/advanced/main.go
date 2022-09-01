@@ -49,8 +49,13 @@ func main() {
 }
 
 func downloader(wg *sync.WaitGroup, s *ysmrr.Spinner) {
-	s.UpdateMessage("Downloading...")
-	time.Sleep(2 * time.Second)
+	files := []string{"file1", "file2", "file3", "file4", "file5"}
+	for _, file := range files {
+		s.UpdateMessagef("Downloading %s...", file)
+		time.Sleep(1 * time.Second)
+	}
+
+	s.UpdateMessage("Downloading complete...")
 	s.Complete()
 }
 
