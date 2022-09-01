@@ -216,9 +216,10 @@ func (sm *spinnerManager) setNextFrame() {
 //		WithSpinnerColor(colors.Red),
 //	)
 func NewSpinnerManager(options ...managerOption) SpinnerManager {
+	animationSpeed, animationChars := animations.GetAnimation(animations.Dots)
 	sm := &spinnerManager{
-		chars:         animations.GetAnimation(animations.Dots),
-		frameDuration: 100 * time.Millisecond,
+		chars:         animationChars,
+		frameDuration: animationSpeed,
 		spinnerColor:  colors.FgHiGreen,
 		errorColor:    colors.FgHiRed,
 		completeColor: colors.FgHiGreen,
@@ -257,7 +258,9 @@ type managerOption func(*spinnerManager)
 // The default spinner animation is the Dots.
 func WithAnimation(a animations.Animation) managerOption {
 	return func(sm *spinnerManager) {
-		sm.chars = animations.GetAnimation(a)
+		animationSpeed, animationChars := animations.GetAnimation(a)
+		sm.chars = animationChars
+		sm.frameDuration = animationSpeed
 	}
 }
 
