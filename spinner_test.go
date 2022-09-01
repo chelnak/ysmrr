@@ -52,6 +52,14 @@ func TestSpinnerUpdateMessage(t *testing.T) {
 	assert.Equal(t, updatedMessage, spinner.GetMessage())
 }
 
+func TestSpinnerUpdateMessagef(t *testing.T) {
+	expectedMessage := "updated message test"
+	opts := initialOpts
+	spinner := ysmrr.NewSpinner(opts)
+	spinner.UpdateMessagef("updated message %s", "test")
+	assert.Equal(t, expectedMessage, spinner.GetMessage())
+}
+
 func TestSpinnerComplete(t *testing.T) {
 	opts := initialOpts
 	spinner := ysmrr.NewSpinner(opts)
