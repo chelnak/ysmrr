@@ -19,6 +19,7 @@ type Spinner struct {
 	message       string
 	complete      bool
 	err           bool
+	hasUpdate     chan bool
 }
 
 // GetMessage returns the current spinner message.
@@ -33,8 +34,8 @@ func (s *Spinner) GetMessage() string {
 func (s *Spinner) UpdateMessage(message string) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
-
 	s.message = message
+	s.notifyHasUpdate()
 }
 
 // IsComplete returns true if the spinner is complete.
@@ -91,12 +92,20 @@ func print(w io.Writer, s string, c *color.Color) {
 	}
 }
 
+func (s *Spinner) notifyHasUpdate() {
+	select {
+	case s.hasUpdate <- true:
+	default:
+	}
+}
+
 type SpinnerOptions struct {
 	SpinnerColor  colors.Color
 	CompleteColor colors.Color
 	ErrorColor    colors.Color
 	MessageColor  colors.Color
 	Message       string
+	HasUpdate     chan bool
 }
 
 // NewSpinner creates a new spinner instance.
@@ -107,5 +116,6 @@ func NewSpinner(options SpinnerOptions) *Spinner {
 		errorColor:    colors.GetColor(options.ErrorColor),
 		messageColor:  colors.GetColor(options.MessageColor),
 		message:       options.Message,
+		hasUpdate:     options.HasUpdate,
 	}
 }

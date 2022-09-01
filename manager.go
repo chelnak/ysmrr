@@ -41,6 +41,7 @@ type spinnerManager struct {
 	messageColor  colors.Color
 	writer        io.Writer
 	done          chan bool
+	hasUpdate     chan bool
 	ticks         *time.Ticker
 	frame         int
 	tty           bool
@@ -54,6 +55,7 @@ func (sm *spinnerManager) AddSpinner(message string) *Spinner {
 		CompleteColor: sm.completeColor,
 		ErrorColor:    sm.errorColor,
 		MessageColor:  sm.messageColor,
+		HasUpdate:     sm.hasUpdate,
 	}
 	spinner := NewSpinner(opts)
 	sm.spinners = append(sm.spinners, spinner)
@@ -156,27 +158,33 @@ outer:
 		select {
 		case <-sm.done:
 			break outer
+		case <-sm.hasUpdate:
+			sm.renderFrame(false)
 		case <-sm.ticks.C:
-			// Only render the frame if we are in a terminal.
-			if sm.tty {
-				tput.BufScreen(sm.writer, len(sm.spinners))
-				tput.Cuu(sm.writer, len(sm.spinners))
-				tput.Sc(sm.writer)
-
-				sm.renderFrame()
-			}
+			sm.renderFrame(true)
 		}
 
 		tput.Rc(sm.writer)
 	}
 }
 
-func (sm *spinnerManager) renderFrame() {
+func (sm *spinnerManager) renderFrame(animate bool) {
+	if !sm.tty {
+		return
+	}
+
+	tput.BufScreen(sm.writer, len(sm.spinners))
+	tput.Cuu(sm.writer, len(sm.spinners))
+	tput.Sc(sm.writer)
+
 	for _, s := range sm.spinners {
 		tput.ClearLine(sm.writer)
 		s.Print(sm.writer, sm.chars[sm.frame])
 	}
-	sm.setNextFrame()
+
+	if animate {
+		sm.setNextFrame()
+	}
 }
 
 func (sm *spinnerManager) setNextFrame() {
@@ -217,6 +225,7 @@ func NewSpinnerManager(options ...managerOption) SpinnerManager {
 		messageColor:  colors.NoColor,
 		writer:        getWriter(),
 		done:          make(chan bool),
+		hasUpdate:     make(chan bool),
 		tty:           tty(),
 	}
 
