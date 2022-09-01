@@ -18,6 +18,7 @@ var initialOpts = ysmrr.SpinnerOptions{
 	CompleteColor: colors.FgHiGreen,
 	ErrorColor:    colors.FgHiRed,
 	MessageColor:  colors.NoColor,
+	HasUpdate:     make(chan bool),
 }
 
 func TestNewSpinner(t *testing.T) {
