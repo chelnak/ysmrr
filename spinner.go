@@ -85,6 +85,8 @@ func (s *Spinner) Print(w io.Writer, char string) {
 		print(w, char, s.spinnerColor)
 	}
 
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
 	message := fmt.Sprintf(" %s\r\n", s.message)
 	print(w, message, s.messageColor)
 }
