@@ -2,6 +2,7 @@ package ysmrr_test
 
 import (
 	"bytes"
+	"sync"
 	"testing"
 	"time"
 
@@ -104,4 +105,25 @@ func TestGetMessageColor(t *testing.T) {
 	)
 
 	assert.Equal(t, colors.FgHiBlue, spinnerManager.GetMessageColor())
+}
+
+func TestManagerConcurrentSpinnerUsage(t *testing.T) {
+	var out bytes.Buffer
+	spinnerManager := ysmrr.NewSpinnerManager(ysmrr.WithWriter(&out))
+	spinnerManager.Start()
+
+	var wg sync.WaitGroup
+	for _, msg := range []string{"test-1", "test-2", "test-3"} {
+		wg.Add(1)
+		go func(wg *sync.WaitGroup, msg string) {
+			defer wg.Done()
+
+			s := spinnerManager.AddSpinner(msg)
+			s.UpdateMessage(msg + "-update")
+			s.Complete()
+		}(&wg, msg)
+	}
+	wg.Wait()
+
+	spinnerManager.Stop()
 }
