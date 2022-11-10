@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/signal"
 	"runtime"
+	"sync"
 	"time"
 
 	"github.com/chelnak/ysmrr/pkg/animations"
@@ -32,7 +33,9 @@ type SpinnerManager interface {
 }
 
 type spinnerManager struct {
-	spinners      []*Spinner
+	spinners   []*Spinner
+	spinnersMu sync.RWMutex
+
 	chars         []string
 	frameDuration time.Duration
 	spinnerColor  colors.Color
@@ -58,12 +61,18 @@ func (sm *spinnerManager) AddSpinner(message string) *Spinner {
 		HasUpdate:     sm.hasUpdate,
 	}
 	spinner := NewSpinner(opts)
+
+	sm.spinnersMu.Lock()
 	sm.spinners = append(sm.spinners, spinner)
+	sm.spinnersMu.Unlock()
+
 	return spinner
 }
 
 // GetSpinners returns the spinners managed by the manager.
 func (sm *spinnerManager) GetSpinners() []*Spinner {
+	sm.spinnersMu.RLock()
+	defer sm.spinnersMu.RUnlock()
 	return sm.spinners
 }
 
@@ -96,6 +105,8 @@ func (sm *spinnerManager) Stop() {
 	sm.ticks.Stop()
 
 	// Persist the final frame for each spinner.
+	sm.spinnersMu.Lock()
+	defer sm.spinnersMu.Unlock()
 	for _, s := range sm.spinners {
 		tput.ClearLine(sm.writer)
 		s.Print(sm.writer, sm.chars[sm.frame])
@@ -173,11 +184,13 @@ func (sm *spinnerManager) renderFrame(animate bool) {
 		return
 	}
 
-	tput.BufScreen(sm.writer, len(sm.spinners))
-	tput.Cuu(sm.writer, len(sm.spinners))
+	spinners := sm.GetSpinners()
+
+	tput.BufScreen(sm.writer, len(spinners))
+	tput.Cuu(sm.writer, len(spinners))
 	tput.Sc(sm.writer)
 
-	for _, s := range sm.spinners {
+	for _, s := range spinners {
 		tput.ClearLine(sm.writer)
 		s.Print(sm.writer, sm.chars[sm.frame])
 	}
