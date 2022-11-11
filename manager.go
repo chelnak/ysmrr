@@ -33,8 +33,8 @@ type SpinnerManager interface {
 }
 
 type spinnerManager struct {
-	spinners   []*Spinner
-	spinnersMu sync.RWMutex
+	spinners []*Spinner
+	mutex    sync.RWMutex
 
 	chars         []string
 	frameDuration time.Duration
@@ -62,17 +62,17 @@ func (sm *spinnerManager) AddSpinner(message string) *Spinner {
 	}
 	spinner := NewSpinner(opts)
 
-	sm.spinnersMu.Lock()
+	sm.mutex.Lock()
+	defer sm.mutex.Unlock()
 	sm.spinners = append(sm.spinners, spinner)
-	sm.spinnersMu.Unlock()
 
 	return spinner
 }
 
 // GetSpinners returns the spinners managed by the manager.
 func (sm *spinnerManager) GetSpinners() []*Spinner {
-	sm.spinnersMu.RLock()
-	defer sm.spinnersMu.RUnlock()
+	sm.mutex.RLock()
+	defer sm.mutex.RUnlock()
 	return sm.spinners
 }
 
@@ -105,8 +105,8 @@ func (sm *spinnerManager) Stop() {
 	sm.ticks.Stop()
 
 	// Persist the final frame for each spinner.
-	sm.spinnersMu.Lock()
-	defer sm.spinnersMu.Unlock()
+	sm.mutex.Lock()
+	defer sm.mutex.Unlock()
 	for _, s := range sm.spinners {
 		tput.ClearLine(sm.writer)
 		s.Print(sm.writer, sm.chars[sm.frame])
