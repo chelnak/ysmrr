@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
+## [v0.2.1](https://github.com/chelnak/ysmrr/tree/v0.2.1) - 2022-11-11
+
+[Full Changelog](https://github.com/chelnak/ysmrr/compare/v0.2.0...v0.2.1)
+
+### Fixed
+
+- fix race condition in `(*Spinner).Print` [#46](https://github.com/chelnak/ysmrr/pull/46) ([fortytw2](https://github.com/fortytw2))
+
 ## [v0.2.0](https://github.com/chelnak/ysmrr/tree/v0.2.0) - 2022-09-01
 
 [Full Changelog](https://github.com/chelnak/ysmrr/compare/v0.1.1...v0.2.0)
