@@ -5,7 +5,6 @@ package ysmrr
 import (
 	"io"
 	"os"
-	"os/signal"
 	"runtime"
 	"sync"
 	"time"
@@ -78,19 +77,6 @@ func (sm *spinnerManager) GetSpinners() []*Spinner {
 
 // Start signals that all spinners should start.
 func (sm *spinnerManager) Start() {
-	// Handle SIGINT and SIGTERM so we can ensure that the
-	// terminal is properly reset.
-	// Unsure if this is the right place for this especially given
-	// that it calls os.Exit.
-	signals := make(chan os.Signal, 1)
-	signal.Notify(signals, os.Interrupt)
-
-	go func() {
-		<-signals
-		sm.Stop()
-		os.Exit(0)
-	}()
-
 	sm.ticks = time.NewTicker(sm.frameDuration)
 	go sm.render()
 }

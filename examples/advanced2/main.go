@@ -18,7 +18,6 @@ func (a *App) doMoreWork() {
 }
 
 func (a *App) doWork() {
-
 	s := a.spinnerManager.AddSpinner("Loading...DoWork()")
 	time.Sleep(time.Second * 5)
 	s.UpdateMessage("its Done")
@@ -46,9 +45,7 @@ func NewApp() *App {
 }
 
 func main() {
-
 	app := NewApp()
 	app.Run()
 	app.Stop()
-
 }
