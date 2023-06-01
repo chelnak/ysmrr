@@ -61,11 +61,43 @@ func TestSpinnerUpdateMessagef(t *testing.T) {
 	assert.Equal(t, expectedMessage, spinner.GetMessage())
 }
 
+func TestSpinnerCompleteWithMessage(t *testing.T) {
+	opts := initialOpts
+	spinner := ysmrr.NewSpinner(opts)
+	spinner.CompleteWithMessage("complete")
+	assert.Equal(t, true, spinner.IsComplete())
+	assert.Equal(t, "complete", spinner.GetMessage())
+}
+
+func TestSpinnerCompleteWithMessagef(t *testing.T) {
+	opts := initialOpts
+	spinner := ysmrr.NewSpinner(opts)
+	spinner.CompleteWithMessagef("complete %s", "test")
+	assert.Equal(t, true, spinner.IsComplete())
+	assert.Equal(t, "complete test", spinner.GetMessage())
+}
+
 func TestSpinnerComplete(t *testing.T) {
 	opts := initialOpts
 	spinner := ysmrr.NewSpinner(opts)
 	spinner.Complete()
 	assert.Equal(t, true, spinner.IsComplete())
+}
+
+func TestSpinnerErrorWithMessage(t *testing.T) {
+	opts := initialOpts
+	spinner := ysmrr.NewSpinner(opts)
+	spinner.ErrorWithMessage("error")
+	assert.Equal(t, true, spinner.IsError())
+	assert.Equal(t, "error", spinner.GetMessage())
+}
+
+func TestSpinnerErrorWithMessagef(t *testing.T) {
+	opts := initialOpts
+	spinner := ysmrr.NewSpinner(opts)
+	spinner.ErrorWithMessagef("error %s", "test")
+	assert.Equal(t, true, spinner.IsError())
+	assert.Equal(t, "error test", spinner.GetMessage())
 }
 
 func TestSpinnerError(t *testing.T) {

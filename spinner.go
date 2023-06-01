@@ -59,12 +59,38 @@ func (s *Spinner) IsError() bool {
 	return s.err
 }
 
+// CompleteWithMessage marks the spinner as complete with a message.
+func (s *Spinner) CompleteWithMessage(message string) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+	s.message = message
+	s.complete = true
+}
+
+// CompleteWithMessagef marks the spinner as complete with a formatted string.
+func (s *Spinner) CompleteWithMessagef(format string, a ...interface{}) {
+	s.CompleteWithMessage(fmt.Sprintf(format, a...))
+}
+
 // Complete marks the spinner as complete.
 func (s *Spinner) Complete() {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
 	s.complete = true
+}
+
+// ErrorWithMessage marks the spinner as error with a message.
+func (s *Spinner) ErrorWithMessage(message string) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+	s.message = message
+	s.err = true
+}
+
+// ErrorWithMessagef marks the spinner as error with a formatted string.
+func (s *Spinner) ErrorWithMessagef(format string, a ...interface{}) {
+	s.ErrorWithMessage(fmt.Sprintf(format, a...))
 }
 
 // Error marks the spinner as error.
