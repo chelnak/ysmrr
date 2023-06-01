@@ -69,6 +69,5 @@ func installer(wg *sync.WaitGroup, s *ysmrr.Spinner) {
 func runner(wg *sync.WaitGroup, s *ysmrr.Spinner) {
 	s.UpdateMessage("Running...")
 	time.Sleep(8 * time.Second)
-	s.Error()
-	s.UpdateMessage("Running encountered an error...")
+	s.ErrorWithMessage("Running encountered an error...")
 }

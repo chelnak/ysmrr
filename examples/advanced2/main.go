@@ -13,15 +13,13 @@ type App struct {
 func (a *App) doMoreWork() {
 	s := a.spinnerManager.AddSpinner("Loading...DoMoreWork()")
 	time.Sleep(time.Second * 5)
-	s.UpdateMessage("Done")
-	s.Complete()
+	s.CompleteWithMessage("Done")
 }
 
 func (a *App) doWork() {
 	s := a.spinnerManager.AddSpinner("Loading...DoWork()")
 	time.Sleep(time.Second * 5)
-	s.UpdateMessage("its Done")
-	s.Complete()
+	s.CompleteWithMessage("It's Done")
 
 	a.doMoreWork()
 }
@@ -30,8 +28,7 @@ func (a *App) Run() {
 	a.spinnerManager.Start()
 	s := a.spinnerManager.AddSpinner("Loading...Run()")
 	a.doWork()
-	s.UpdateMessage("Loading...Run() Done")
-	s.Complete()
+	s.CompleteWithMessage("Loading...Run() Done")
 }
 
 func (a *App) Stop() {
