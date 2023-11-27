@@ -17,6 +17,7 @@ type Spinner struct {
 	errorColor    *color.Color
 	messageColor  *color.Color
 	message       string
+	prefix        string
 	complete      bool
 	err           bool
 	hasUpdate     chan bool
@@ -41,6 +42,27 @@ func (s *Spinner) UpdateMessage(message string) {
 // UpdateMessagef updates the spinner message with a formatted string.
 func (s *Spinner) UpdateMessagef(format string, a ...interface{}) {
 	s.UpdateMessage(fmt.Sprintf(format, a...))
+}
+
+// GetPrefix returns the current spinner Prefix.
+func (s *Spinner) GetPrefix() string {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
+	return s.prefix
+}
+
+// UpdatePrefix updates the spinner Prefix.
+func (s *Spinner) UpdatePrefix(Prefix string) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+	s.prefix = Prefix
+	s.notifyHasUpdate()
+}
+
+// UpdatePrefixf updates the spinner Prefix with a formatted string.
+func (s *Spinner) UpdatePrefixf(format string, a ...interface{}) {
+	s.UpdatePrefix(fmt.Sprintf(format, a...))
 }
 
 // IsComplete returns true if the spinner is complete.
@@ -103,6 +125,8 @@ func (s *Spinner) Error() {
 
 // Print prints the spinner at a given position.
 func (s *Spinner) Print(w io.Writer, char string) {
+	print(w, s.prefix, s.completeColor)
+
 	if s.IsComplete() {
 		print(w, "✓", s.completeColor)
 	} else if s.IsError() {
