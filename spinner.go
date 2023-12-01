@@ -125,7 +125,7 @@ func (s *Spinner) Error() {
 
 // Print prints the spinner at a given position.
 func (s *Spinner) Print(w io.Writer, char string) {
-	print(w, s.prefix, s.completeColor)
+	print(w, s.prefix, s.messageColor)
 
 	if s.IsComplete() {
 		print(w, "✓", s.completeColor)
