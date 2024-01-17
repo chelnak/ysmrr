@@ -33,6 +33,12 @@ func TestSpinnerGetMessage(t *testing.T) {
 	assert.Equal(t, initialMessage, spinner.GetMessage())
 }
 
+func TestSpinnerGetPrefix(t *testing.T) {
+	opts := initialOpts
+	spinner := ysmrr.NewSpinner(opts)
+	assert.Equal(t, "", spinner.GetPrefix())
+}
+
 func TestSpinnerIsError(t *testing.T) {
 	opts := initialOpts
 	spinner := ysmrr.NewSpinner(opts)
@@ -59,6 +65,22 @@ func TestSpinnerUpdateMessagef(t *testing.T) {
 	spinner := ysmrr.NewSpinner(opts)
 	spinner.UpdateMessagef("updated message %s", "test")
 	assert.Equal(t, expectedMessage, spinner.GetMessage())
+}
+
+func TestSpinnerUpdatePrefix(t *testing.T) {
+	expectedPrefix := "prefix"
+	opts := initialOpts
+	spinner := ysmrr.NewSpinner(opts)
+	spinner.UpdatePrefix(expectedPrefix)
+	assert.Equal(t, expectedPrefix, spinner.GetPrefix())
+}
+
+func TestSpinnerUpdatePrefixf(t *testing.T) {
+	expectedPrefix := "prefix test"
+	opts := initialOpts
+	spinner := ysmrr.NewSpinner(opts)
+	spinner.UpdatePrefixf("prefix %s", "test")
+	assert.Equal(t, expectedPrefix, spinner.GetPrefix())
 }
 
 func TestSpinnerCompleteWithMessage(t *testing.T) {
@@ -116,6 +138,21 @@ func TestPrint(t *testing.T) {
 	spinner.Print(&buf, dots[0])
 
 	want := fmt.Sprintf("%s %s\r\n", dots[0], initialMessage)
+	assert.Equal(t, want, buf.String())
+}
+
+func TestPrintWithPrefix(t *testing.T) {
+	opts := initialOpts
+	spinner := ysmrr.NewSpinner(opts)
+
+	prefix := "prefix"
+	spinner.UpdatePrefix(prefix)
+
+	var buf bytes.Buffer
+	_, dots := animations.GetAnimation(animations.Dots)
+	spinner.Print(&buf, dots[0])
+
+	want := fmt.Sprintf("%s%s %s\r\n", prefix, dots[0], initialMessage)
 	assert.Equal(t, want, buf.String())
 }
 
