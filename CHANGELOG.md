@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v0.4.0](https://github.com/chelnak/ysmrr/tree/v0.4.0) - 2024-02-24
+
+[Full Changelog](https://github.com/chelnak/ysmrr/compare/v0.3.0...v0.4.0)
+
+### Added
+
+- add a prefix to spinner [#63](https://github.com/chelnak/ysmrr/pull/63) ([KScott99](https://github.com/KScott99))
+- Enhance complete and error methods [#60](https://github.com/chelnak/ysmrr/pull/60) ([chelnak](https://github.com/chelnak))
+
 ## [v0.3.0](https://github.com/chelnak/ysmrr/tree/v0.3.0) - 2023-06-01
 
 [Full Changelog](https://github.com/chelnak/ysmrr/compare/v0.2.1...v0.3.0)
