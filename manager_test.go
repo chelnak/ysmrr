@@ -127,3 +127,20 @@ func TestManagerConcurrentSpinnerUsage(t *testing.T) {
 
 	spinnerManager.Stop()
 }
+
+func TestManagerRunning(t *testing.T) {
+	spinnerManager := ysmrr.NewSpinnerManager()
+	assert.False(t, spinnerManager.Running())
+	spinnerManager.Start()
+	assert.True(t, spinnerManager.Running())
+	spinnerManager.Stop()
+	assert.False(t, spinnerManager.Running())
+}
+
+func TestManagerStopTwice(t *testing.T) {
+	spinnerManager := ysmrr.NewSpinnerManager()
+	spinnerManager.Start()
+	spinnerManager.AddSpinner("test")
+	spinnerManager.Stop()
+	spinnerManager.Stop()
+}

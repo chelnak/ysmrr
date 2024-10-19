@@ -47,6 +47,18 @@ sm.Start()
 sm.Stop()
 ```
 
+Running `Stop()` on a stopped spinner group is a noop operation.
+
+#### Checking if a spinner group is running
+
+```go
+sm := ysmrr.NewSpinnerManager()
+sm.Start()
+isRunning := sm.Running() // true
+sm.Stop()
+isRunning = sm.Running() // false
+```
+
 ### Spinners
 
 `SpinnerManagers` are great but pretty useless on their own. You need to add at least one spinner.
@@ -111,8 +123,8 @@ For more usage examples, check out the [examples](examples) directory.
 
 Ysmrr was inspired by the following projects:
 
-* [github.com/briandowns/spinner](https://github.com/briandowns/spinner)
-* [github.com/theckman/yacspin](https://github.com/theckman/yacspin)
+- [github.com/briandowns/spinner](https://github.com/briandowns/spinner)
+- [github.com/theckman/yacspin](https://github.com/theckman/yacspin)
 
 It also uses [github.com/fatih/color](https://github.com/fatih/color) for the underlying color system
 and [github.com/mattn/go-colorable](https://github.com/mattn/go-colorable) for Windows support.

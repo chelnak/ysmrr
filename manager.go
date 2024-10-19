@@ -29,6 +29,7 @@ type SpinnerManager interface {
 	GetMessageColor() colors.Color
 	Start()
 	Stop()
+	Running() bool
 }
 
 type spinnerManager struct {
@@ -43,6 +44,7 @@ type spinnerManager struct {
 	messageColor  colors.Color
 	writer        io.Writer
 	done          chan bool
+	running       bool
 	hasUpdate     chan bool
 	ticks         *time.Ticker
 	frame         int
@@ -78,6 +80,7 @@ func (sm *spinnerManager) GetSpinners() []*Spinner {
 // Start signals that all spinners should start.
 func (sm *spinnerManager) Start() {
 	sm.ticks = time.NewTicker(sm.frameDuration)
+	sm.running = true
 	go sm.render()
 }
 
@@ -87,6 +90,9 @@ func (sm *spinnerManager) Start() {
 // Finally the deferred tput command will ensure tat the cursor
 // is no longer hidden.
 func (sm *spinnerManager) Stop() {
+	if !sm.running {
+		return
+	}
 	sm.done <- true
 	sm.ticks.Stop()
 
@@ -97,6 +103,11 @@ func (sm *spinnerManager) Stop() {
 		tput.ClearLine(sm.writer)
 		s.Print(sm.writer, sm.chars[sm.frame])
 	}
+}
+
+// Running returns a boolean indicating whether the manager is running.
+func (sm *spinnerManager) Running() bool {
+	return sm.running
 }
 
 // GetWriter returns the configured io.Writer.
@@ -154,6 +165,7 @@ outer:
 	for {
 		select {
 		case <-sm.done:
+			sm.running = false
 			break outer
 		case <-sm.hasUpdate:
 			sm.renderFrame(false)
