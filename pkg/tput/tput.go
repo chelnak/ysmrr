@@ -52,12 +52,12 @@ func tty() bool {
 
 func write(w io.Writer, s string) {
 	if tty() {
-		fmt.Fprint(w, s)
+		_, _ = fmt.Fprint(w, s)
 	}
 }
 
 func writef(w io.Writer, format string, a ...interface{}) {
 	if tty() {
-		fmt.Fprintf(w, format, a...)
+		_, _ = fmt.Fprintf(w, format, a...)
 	}
 }
