@@ -143,9 +143,9 @@ func (s *Spinner) Print(w io.Writer, char string) {
 
 func print(w io.Writer, s string, c *color.Color) {
 	if c != nil {
-		_, _ = c.Fprintf(w, s)
+		_, _ = c.Fprint(w, s)
 	} else {
-		fmt.Fprint(w, s)
+		_, _ = fmt.Fprint(w, s)
 	}
 }
 
