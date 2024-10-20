@@ -95,6 +95,7 @@ func (sm *spinnerManager) Stop() {
 	}
 	sm.done <- true
 	sm.ticks.Stop()
+	sm.running = false
 
 	// Persist the final frame for each spinner.
 	sm.mutex.Lock()
@@ -165,7 +166,6 @@ outer:
 	for {
 		select {
 		case <-sm.done:
-			sm.running = false
 			break outer
 		case <-sm.hasUpdate:
 			sm.renderFrame(false)
