@@ -14,6 +14,7 @@ import (
 	"github.com/chelnak/ysmrr/pkg/tput"
 	"github.com/mattn/go-colorable"
 	"github.com/mattn/go-isatty"
+	"golang.org/x/term"
 )
 
 // SpinnerManager manages spinners
@@ -177,18 +178,50 @@ outer:
 	}
 }
 
+const defaultHeight = 24
+
+func terminalHeight() int {
+	if runtime.GOOS == "windows" {
+		return defaultHeight
+	}
+
+	fd := 0
+	if !term.IsTerminal(fd) {
+		return defaultHeight
+	}
+
+	_, height, err := term.GetSize(fd)
+	if err != nil {
+		return defaultHeight
+	}
+
+	if height <= 0 {
+		return defaultHeight
+	}
+
+	return height
+}
+
 func (sm *spinnerManager) renderFrame(animate bool) {
 	if !sm.tty {
 		return
 	}
 
-	spinners := sm.GetSpinners()
+	height := terminalHeight()
 
-	tput.BufScreen(sm.writer, len(spinners))
-	tput.Cuu(sm.writer, len(spinners))
+	spinners := sm.GetSpinners()
+	maxVisible := height - 2
+
+	visibleSpinners := spinners
+	if len(spinners) > maxVisible {
+		visibleSpinners = spinners[len(spinners)-maxVisible:]
+	}
+
+	tput.BufScreen(sm.writer, len(visibleSpinners))
+	tput.Cuu(sm.writer, len(visibleSpinners))
 	tput.Sc(sm.writer)
 
-	for _, s := range spinners {
+	for _, s := range visibleSpinners {
 		tput.ClearLine(sm.writer)
 		s.Print(sm.writer, sm.chars[sm.frame])
 	}
