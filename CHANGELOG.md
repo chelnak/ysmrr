@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v0.5.0](https://github.com/chelnak/ysmrr/tree/v0.5.0) - 2024-12-02
+
+[Full Changelog](https://github.com/chelnak/ysmrr/compare/v0.4.0...v0.5.0)
+
+### Added
+
+- Add running state to spinner manager, allow running Stop multiple times [#68](https://github.com/chelnak/ysmrr/pull/68) ([KimNorgaard](https://github.com/KimNorgaard))
+
+### Fixed
+
+- fix: limit visible spinners to terminal height [#74](https://github.com/chelnak/ysmrr/pull/74) ([yarlson](https://github.com/yarlson))
+
 ## [v0.4.0](https://github.com/chelnak/ysmrr/tree/v0.4.0) - 2024-02-24
 
 [Full Changelog](https://github.com/chelnak/ysmrr/compare/v0.3.0...v0.4.0)
