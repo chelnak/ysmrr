@@ -11,16 +11,18 @@ import (
 
 // Spinner manages a single spinner
 type Spinner struct {
-	mutex         sync.Mutex
-	spinnerColor  *color.Color
-	completeColor *color.Color
-	errorColor    *color.Color
-	messageColor  *color.Color
-	message       string
-	prefix        string
-	complete      bool
-	err           bool
-	hasUpdate     chan bool
+	mutex             sync.Mutex
+	spinnerColor      *color.Color
+	completeColor     *color.Color
+	errorColor        *color.Color
+	messageColor      *color.Color
+	message           string
+	completeCharacter string
+	errorCharacter    string
+	prefix            string
+	complete          bool
+	err               bool
+	hasUpdate         chan bool
 }
 
 // GetMessage returns the current spinner message.
@@ -94,6 +96,14 @@ func (s *Spinner) CompleteWithMessagef(format string, a ...interface{}) {
 	s.CompleteWithMessage(fmt.Sprintf(format, a...))
 }
 
+// CompleteCharacter updates the complete character with a given string.
+func (s *Spinner) CompleteCharacter(character string) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
+	s.completeCharacter = character
+}
+
 // Complete marks the spinner as complete.
 func (s *Spinner) Complete() {
 	s.mutex.Lock()
@@ -115,6 +125,14 @@ func (s *Spinner) ErrorWithMessagef(format string, a ...interface{}) {
 	s.ErrorWithMessage(fmt.Sprintf(format, a...))
 }
 
+// ErrorCharacter updates the error character with a given string.
+func (s *Spinner) ErrorCharacter(character string) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
+	s.completeCharacter = character
+}
+
 // Error marks the spinner as error.
 func (s *Spinner) Error() {
 	s.mutex.Lock()
@@ -128,9 +146,9 @@ func (s *Spinner) Print(w io.Writer, char string) {
 	print(w, s.prefix, s.messageColor)
 
 	if s.IsComplete() {
-		print(w, "✓", s.completeColor)
+		print(w, s.completeCharacter, s.completeColor)
 	} else if s.IsError() {
-		print(w, "✗", s.errorColor)
+		print(w, s.errorCharacter, s.errorColor)
 	} else {
 		print(w, char, s.spinnerColor)
 	}
@@ -157,22 +175,26 @@ func (s *Spinner) notifyHasUpdate() {
 }
 
 type SpinnerOptions struct {
-	SpinnerColor  colors.Color
-	CompleteColor colors.Color
-	ErrorColor    colors.Color
-	MessageColor  colors.Color
-	Message       string
-	HasUpdate     chan bool
+	SpinnerColor      colors.Color
+	CompleteColor     colors.Color
+	ErrorColor        colors.Color
+	MessageColor      colors.Color
+	Message           string
+	CompleteCharacter string
+	ErrorCharacter    string
+	HasUpdate         chan bool
 }
 
 // NewSpinner creates a new spinner instance.
 func NewSpinner(options SpinnerOptions) *Spinner {
 	return &Spinner{
-		spinnerColor:  colors.GetColor(options.SpinnerColor),
-		completeColor: colors.GetColor(options.CompleteColor),
-		errorColor:    colors.GetColor(options.ErrorColor),
-		messageColor:  colors.GetColor(options.MessageColor),
-		message:       options.Message,
-		hasUpdate:     options.HasUpdate,
+		spinnerColor:      colors.GetColor(options.SpinnerColor),
+		completeColor:     colors.GetColor(options.CompleteColor),
+		errorColor:        colors.GetColor(options.ErrorColor),
+		messageColor:      colors.GetColor(options.MessageColor),
+		message:           options.Message,
+		completeCharacter: options.CompleteCharacter,
+		errorCharacter:    options.ErrorCharacter,
+		hasUpdate:         options.HasUpdate,
 	}
 }
