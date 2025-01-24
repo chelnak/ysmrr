@@ -28,6 +28,8 @@ type SpinnerManager interface {
 	GetErrorColor() colors.Color
 	GetCompleteColor() colors.Color
 	GetMessageColor() colors.Color
+	GetCompleteCharacter() string
+	GetErrorCharacter() string
 	Start()
 	Stop()
 	Running() bool
@@ -37,30 +39,34 @@ type spinnerManager struct {
 	spinners []*Spinner
 	mutex    sync.RWMutex
 
-	chars         []string
-	frameDuration time.Duration
-	spinnerColor  colors.Color
-	completeColor colors.Color
-	errorColor    colors.Color
-	messageColor  colors.Color
-	writer        io.Writer
-	done          chan bool
-	running       bool
-	hasUpdate     chan bool
-	ticks         *time.Ticker
-	frame         int
-	tty           bool
+	chars             []string
+	frameDuration     time.Duration
+	spinnerColor      colors.Color
+	completeColor     colors.Color
+	errorColor        colors.Color
+	messageColor      colors.Color
+	completeCharacter string
+	errorCharacter    string
+	writer            io.Writer
+	done              chan bool
+	running           bool
+	hasUpdate         chan bool
+	ticks             *time.Ticker
+	frame             int
+	tty               bool
 }
 
 // AddSpinner adds a new spinner to the manager.
 func (sm *spinnerManager) AddSpinner(message string) *Spinner {
 	opts := SpinnerOptions{
-		Message:       message,
-		SpinnerColor:  sm.spinnerColor,
-		CompleteColor: sm.completeColor,
-		ErrorColor:    sm.errorColor,
-		MessageColor:  sm.messageColor,
-		HasUpdate:     sm.hasUpdate,
+		Message:           message,
+		SpinnerColor:      sm.spinnerColor,
+		CompleteColor:     sm.completeColor,
+		ErrorColor:        sm.errorColor,
+		MessageColor:      sm.messageColor,
+		CompleteCharacter: sm.completeCharacter,
+		ErrorCharacter:    sm.errorCharacter,
+		HasUpdate:         sm.hasUpdate,
 	}
 	spinner := NewSpinner(opts)
 
@@ -146,6 +152,16 @@ func (sm *spinnerManager) GetCompleteColor() colors.Color {
 // GetMessageColor returns the color of the message.
 func (sm *spinnerManager) GetMessageColor() colors.Color {
 	return sm.messageColor
+}
+
+// GetErrorCharacter returns the color of the message.
+func (sm *spinnerManager) GetCompleteCharacter() string {
+	return sm.completeCharacter
+}
+
+// GetErrorCharacter returns the color of the message.
+func (sm *spinnerManager) GetErrorCharacter() string {
+	return sm.errorCharacter
 }
 
 // This is the code that actually renders the spinners.
@@ -262,16 +278,18 @@ func (sm *spinnerManager) setNextFrame() {
 func NewSpinnerManager(options ...managerOption) SpinnerManager {
 	animationSpeed, animationChars := animations.GetAnimation(animations.Dots)
 	sm := &spinnerManager{
-		chars:         animationChars,
-		frameDuration: animationSpeed,
-		spinnerColor:  colors.FgHiGreen,
-		errorColor:    colors.FgHiRed,
-		completeColor: colors.FgHiGreen,
-		messageColor:  colors.NoColor,
-		writer:        getWriter(),
-		done:          make(chan bool),
-		hasUpdate:     make(chan bool),
-		tty:           tty(),
+		chars:             animationChars,
+		frameDuration:     animationSpeed,
+		spinnerColor:      colors.FgHiGreen,
+		errorColor:        colors.FgHiRed,
+		completeColor:     colors.FgHiGreen,
+		messageColor:      colors.NoColor,
+		completeCharacter: "✓",
+		errorCharacter:    "✗",
+		writer:            getWriter(),
+		done:              make(chan bool),
+		hasUpdate:         make(chan bool),
+		tty:               tty(),
 	}
 
 	for _, option := range options {
@@ -349,6 +367,20 @@ func WithCompleteColor(c colors.Color) managerOption {
 func WithMessageColor(c colors.Color) managerOption {
 	return func(sm *spinnerManager) {
 		sm.messageColor = c
+	}
+}
+
+// WithCompleteCharacter sets the complete character.
+func WithCompleteCharacter(c string) managerOption {
+	return func(sm *spinnerManager) {
+		sm.completeCharacter = c
+	}
+}
+
+// WithErrorCharacter sets the error character.
+func WithErrorCharacter(c string) managerOption {
+	return func(sm *spinnerManager) {
+		sm.errorCharacter = c
 	}
 }
 
