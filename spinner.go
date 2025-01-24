@@ -33,6 +33,20 @@ func (s *Spinner) GetMessage() string {
 	return s.message
 }
 
+func (s *Spinner) GetCompleteCharacter() string {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
+	return s.completeCharacter
+}
+
+func (s *Spinner) GetErrorCharacter() string {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
+	return s.errorCharacter
+}
+
 // UpdateMessage updates the spinner message.
 func (s *Spinner) UpdateMessage(message string) {
 	s.mutex.Lock()
@@ -130,7 +144,7 @@ func (s *Spinner) ErrorCharacter(character string) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
-	s.completeCharacter = character
+	s.errorCharacter = character
 }
 
 // Error marks the spinner as error.

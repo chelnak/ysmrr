@@ -28,6 +28,8 @@ type SpinnerManager interface {
 	GetErrorColor() colors.Color
 	GetCompleteColor() colors.Color
 	GetMessageColor() colors.Color
+	GetCompleteCharacter() string
+	GetErrorCharacter() string
 	Start()
 	Stop()
 	Running() bool

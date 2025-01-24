@@ -13,12 +13,14 @@ import (
 
 var initialMessage = "test"
 var initialOpts = ysmrr.SpinnerOptions{
-	Message:       initialMessage,
-	SpinnerColor:  colors.FgHiGreen,
-	CompleteColor: colors.FgHiGreen,
-	ErrorColor:    colors.FgHiRed,
-	MessageColor:  colors.NoColor,
-	HasUpdate:     make(chan bool),
+	Message:           initialMessage,
+	SpinnerColor:      colors.NoColor,
+	CompleteColor:     colors.NoColor,
+	ErrorColor:        colors.NoColor,
+	MessageColor:      colors.NoColor,
+	CompleteCharacter: "✓",
+	ErrorCharacter:    "✗",
+	HasUpdate:         make(chan bool),
 }
 
 func TestNewSpinner(t *testing.T) {
@@ -104,6 +106,22 @@ func TestSpinnerComplete(t *testing.T) {
 	spinner := ysmrr.NewSpinner(opts)
 	spinner.Complete()
 	assert.Equal(t, true, spinner.IsComplete())
+}
+
+func TestCompleteCharacter(t *testing.T) {
+	opts := initialOpts
+	expectedCharacter := "*"
+	spinner := ysmrr.NewSpinner(opts)
+	spinner.CompleteCharacter(expectedCharacter)
+	assert.Equal(t, expectedCharacter, spinner.GetCompleteCharacter())
+}
+
+func TestErrorCharacter(t *testing.T) {
+	opts := initialOpts
+	expectedCharacter := "*"
+	spinner := ysmrr.NewSpinner(opts)
+	spinner.ErrorCharacter(expectedCharacter)
+	assert.Equal(t, expectedCharacter, spinner.GetErrorCharacter())
 }
 
 func TestSpinnerErrorWithMessage(t *testing.T) {

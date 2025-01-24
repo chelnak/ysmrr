@@ -107,6 +107,24 @@ func TestGetMessageColor(t *testing.T) {
 	assert.Equal(t, colors.FgHiBlue, spinnerManager.GetMessageColor())
 }
 
+func TestGetCompleteCharacter(t *testing.T) {
+	expectedCharacter := "*"
+	spinnerManager := ysmrr.NewSpinnerManager(
+		ysmrr.WithCompleteCharacter(expectedCharacter),
+	)
+
+	assert.Equal(t, expectedCharacter, spinnerManager.GetCompleteCharacter())
+}
+
+func TestGetErrorCharacter(t *testing.T) {
+	expectedCharacter := "*"
+	spinnerManager := ysmrr.NewSpinnerManager(
+		ysmrr.WithErrorCharacter(expectedCharacter),
+	)
+
+	assert.Equal(t, expectedCharacter, spinnerManager.GetErrorCharacter())
+}
+
 func TestManagerConcurrentSpinnerUsage(t *testing.T) {
 	var out bytes.Buffer
 	spinnerManager := ysmrr.NewSpinnerManager(ysmrr.WithWriter(&out))
