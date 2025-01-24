@@ -377,7 +377,7 @@ func WithCompleteCharacter(c string) managerOption {
 	}
 }
 
-// WithErrorCharacter sets the error character
+// WithErrorCharacter sets the error character.
 func WithErrorCharacter(c string) managerOption {
 	return func(sm *spinnerManager) {
 		sm.errorCharacter = c
