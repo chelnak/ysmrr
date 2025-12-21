@@ -36,6 +36,21 @@ func TestNewSpinnerManager_WithAnimation(t *testing.T) {
 	assert.Equal(t, arrows, spinnerManager.GetAnimation())
 }
 
+func TestNewSpinnerManager_WithCustomAnimation(t *testing.T) {
+	globes := []string{
+		"🌎", "🌏", "🌍",
+	}
+	ap := animations.Properties{
+		Speed:      time.Second / 2,
+		Characters: globes,
+	}
+	spinnerManager := ysmrr.NewSpinnerManager(
+		ysmrr.WithCustomAnimation(ap),
+	)
+
+	assert.Equal(t, globes, spinnerManager.GetAnimation())
+}
+
 func TestNewSpinnerManager_WithFrameDuration(t *testing.T) {
 	spinnerManager := ysmrr.NewSpinnerManager(
 		ysmrr.WithFrameDuration(2 * time.Second),
