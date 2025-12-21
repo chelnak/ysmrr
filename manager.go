@@ -326,6 +326,18 @@ func WithAnimation(a animations.Animation) managerOption {
 	}
 }
 
+// WithCustomAnimation allows one to specify their own [github.com/chelnak/ysmrr/pkg/animations.Properties].
+func WithCustomAnimation(ap animations.Properties) managerOption {
+	// TODO: There should probably be error checking and nil-checking/len-checking
+	//  	 in place for this and other option-getters, but that'd either be an
+	//  	 API change or it would have to raise a panic - both would require significant
+	//		 version bumps for SemVer.
+	return func(sm *spinnerManager) {
+		sm.chars = ap.GetCharacters()
+		sm.frameDuration = ap.GetSpeed()
+	}
+}
+
 // WithFrameDuration sets the duration of each frame.
 // The default duration is 250 milliseconds.
 func WithFrameDuration(d time.Duration) managerOption {
